@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دورة ICDL - شهادة الحاسوب الدولية</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+
+        .nav-tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #667eea;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            min-width: 150px;
+            font-family: inherit;
+        }
+
+        .nav-tab:hover { background: white; color: #667eea; }
+
+        .nav-tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: -2px;
+        }
+
+        .content { padding: 40px; min-height: 800px; }
+
+        .section { display: none; }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 { color: #333; margin-bottom: 15px; }
+
+        .theory-box {
+            background: #f0f4ff;
+            border-right: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .theory-box h3 { color: #667eea; margin-bottom: 10px; }
+
+        .theory-box p { line-height: 1.8; color: #333; margin-bottom: 8px; }
+
+        .example-box {
+            background: #e8f5e9;
+            border-right: 4px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h4 { color: #2e7d32; margin-bottom: 10px; }
+
+        .example-box pre {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.92em;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+
+        pre, code {
+            direction: ltr;
+            text-align: left;
+            unicode-bidi: embed;
+        }
+
+        table th, table td { unicode-bidi: plaintext; }
+
+        .question {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-right: 4px solid #667eea;
+        }
+
+        .question h4 { color: #667eea; margin-bottom: 15px; font-size: 1.1em; }
+
+        .options { display: flex; flex-direction: column; gap: 10px; }
+
+        .option {
+            padding: 12px 15px;
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option:hover { background: #f0f4ff; border-color: #667eea; }
+
+        .option input[type="radio"] { cursor: pointer; width: 20px; height: 20px; }
+
+        .option.selected { background: #e3f2fd; border-color: #667eea; }
+        .option.correct { background: #c8e6c9; border-color: #4caf50; }
+        .option.incorrect { background: #ffcdd2; border-color: #f44336; }
+
+        .answer-explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3e0;
+            border-right: 4px solid #ff9800;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .answer-explanation.show { display: block; }
+
+        .btn-submit {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-submit:hover { background: #764ba2; transform: translateY(-2px); }
+
+        .results {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            display: none;
+        }
+
+        .results.show { display: block; }
+        .results h3 { color: #2e7d32; margin-bottom: 10px; font-size: 1.5em; }
+
+        .progress-bar {
+            background: #ddd;
+            height: 8px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .list-items { list-style: none; padding-right: 20px; }
+
+        .list-items li {
+            padding: 10px 0;
+            padding-right: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            position: relative;
+        }
+
+        .list-items li:before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: right;
+            border: 1px solid #ddd;
+        }
+
+        table th { background: #667eea; color: white; }
+        table tr:nth-child(even) { background: #f9f9f9; }
+
+        .tip-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #856404;
+        }
+
+        .tip-box h4 { color: #ff9800; margin-bottom: 10px; }
+
+        .exercise-box {
+            background: #fff8e1;
+            border-right: 4px solid #ffb300;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .exercise-box h4 { color: #e65100; margin-bottom: 10px; }
+        .exercise-box ol { padding-right: 22px; }
+        .exercise-box li { margin-bottom: 10px; line-height: 1.8; }
+
+        .mistake-box {
+            background: #ffebee;
+            border-right: 4px solid #e53935;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .mistake-box h4 { color: #c62828; margin-bottom: 10px; }
+        .mistake-box li { margin-bottom: 8px; }
+
+        .glossary-search {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        .glossary-search:focus { outline: none; border-color: #667eea; }
+
+        .glossary-table td:first-child {
+            direction: ltr;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .timer {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .exam-controls { text-align: center; margin: 20px 0; }
+
+        .btn-start {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-family: inherit;
+        }
+
+        .btn-start:hover { background: #388e3c; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav-tab { min-width: 120px; padding: 12px 10px; font-size: 0.9em; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>دورة ICDL</h1>
+            <p>شهادة الحاسوب الدولية</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchSection('principles', this)">مبادئ الحاسوب</button>
+            <button class="nav-tab" onclick="switchSection('word', this)">Word</button>
+            <button class="nav-tab" onclick="switchSection('excel', this)">Excel</button>
+            <button class="nav-tab" onclick="switchSection('presentations', this)">PowerPoint</button>
+        </div>
+
+        <div class="content">
+
+            <!-- ===================== مبادئ الحاسوب ===================== -->
+            <div id="principles" class="section active">
+                <h2>مبادئ الحاسوب الأساسية</h2>
+                <div class="progress-bar"><div class="progress-fill" id="principles-progress"></div></div>
+
+                <div class="theory-box">
+                    <h3>1. أنواع الحواسيب</h3>
+                    <ul class="list-items">
+                        <li><strong>الحاسوب المكتبي (Desktop):</strong> جهاز ثابت يتكون من وحدة المعالجة والشاشة ولوحة المفاتيح والفأرة منفصلة</li>
+                        <li><strong>الحاسوب المحمول (Laptop):</strong> جهاز متكامل وخفيف يمكن حمله بسهولة وتشغيله بالبطارية</li>
+                        <li><strong>الجهاز اللوحي (Tablet):</strong> شاشة لمس كبيرة مع إمكانية إضافة لوحة مفاتيح خارجية</li>
+                        <li><strong>الهاتف الذكي (Smartphone):</strong> حاسوب صغير مدمج مع الاتصال والتصوير</li>
+                        <li><strong>الخادم (Server):</strong> حاسوب قوي يقدم خدماته لأجهزة أخرى في الشبكة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>2. مكونات الحاسوب المادية (Hardware)</h3>
+                    <p>تنقسم مكونات الحاسوب حسب وظيفتها إلى أربعة أنواع رئيسية:</p>
+                    <table>
+                        <tr><th>النوع</th><th>الوظيفة</th><th>أمثلة</th></tr>
+                        <tr><td>أجهزة الإدخال (Input)</td><td>إدخال البيانات إلى الحاسوب</td><td>لوحة المفاتيح، الفأرة، الماسح الضوئي، الميكروفون</td></tr>
+                        <tr><td>أجهزة الإخراج (Output)</td><td>عرض أو إخراج نتائج المعالجة</td><td>الشاشة، الطابعة، السماعات</td></tr>
+                        <tr><td>وحدة المعالجة (Processing)</td><td>تنفيذ العمليات والحسابات</td><td>المعالج CPU، معالج الرسومات GPU</td></tr>
+                        <tr><td>وحدات التخزين (Storage)</td><td>حفظ البيانات والبرامج</td><td>القرص الصلب HDD، القرص الصلب الحالي SSD، الفلاش USB</td></tr>
+                    </table>
+                    <p><strong>اللوحة الأم (Motherboard):</strong> اللوحة الرئيسية التي تربط جميع المكونات ببعضها.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>3. الذاكرة: RAM مقابل ROM</h3>
+                    <ul class="list-items">
+                        <li><strong>RAM (ذاكرة الوصول العشوائي):</strong> ذاكرة مؤقتة وسريعة، تُفقد بياناتها عند إطفاء الحاسوب، وتساعد على تشغيل البرامج بسرعة</li>
+                        <li><strong>ROM (ذاكرة القراءة فقط):</strong> ذاكرة دائمة تحتفظ بالتعليمات الأساسية لتشغيل الحاسوب حتى بعد إطفائه</li>
+                    </ul>
+                    <p>كلما زادت سعة RAM، استطاع الحاسوب تشغيل برامج أكثر في وقت واحد بسلاسة.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>4. البرمجيات (Software)</h3>
+                    <ul class="list-items">
+                        <li><strong>برامج النظام (System Software):</strong> تدير الحاسوب وتشغّله، مثل نظام التشغيل Windows وmacOS وLinux</li>
+                        <li><strong>برامج التطبيقات (Application Software):</strong> تُستخدم لأداء مهام محددة للمستخدم، مثل Microsoft Word وExcel وPowerPoint والمتصفحات</li>
+                        <li><strong>برامج التشغيل (Drivers):</strong> برامج صغيرة تسمح لنظام التشغيل بالتواصل مع جهاز معين، مثل الطابعة أو كرت الشاشة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>5. وحدات قياس البيانات</h3>
+                    <p>أصغر وحدة للبيانات هي <strong>البت (Bit)</strong>، وتأخذ القيمة 0 أو 1.</p>
+                    <table>
+                        <tr><th>الوحدة</th><th>التعريف</th></tr>
+                        <tr><td>Byte (بايت)</td><td>8 Bits</td></tr>
+                        <tr><td>KB (كيلوبايت)</td><td>1024 Byte</td></tr>
+                        <tr><td>MB (ميجابايت)</td><td>1024 KB</td></tr>
+                        <tr><td>GB (جيجابايت)</td><td>1024 MB</td></tr>
+                        <tr><td>TB (تيرابايت)</td><td>1024 GB</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>6. نظام التشغيل Windows: العناصر الأساسية</h3>
+                    <ul class="list-items">
+                        <li><strong>سطح المكتب (Desktop):</strong> المساحة الرئيسية التي تظهر بعد تشغيل الحاسوب</li>
+                        <li><strong>شريط المهام (Taskbar):</strong> الشريط السفلي الذي يعرض البرامج المفتوحة وأيقونات الإعدادات والساعة</li>
+                        <li><strong>قائمة ابدأ (Start Menu):</strong> تحتوي على البرامج والإعدادات ويمكن فتحها بزر Windows</li>
+                        <li><strong>مستكشف الملفات (File Explorer):</strong> لإدارة الملفات والمجلدات، ويُفتح بالاختصار Win+E</li>
+                        <li><strong>سلة المحذوفات (Recycle Bin):</strong> تحتفظ بالملفات المحذوفة لإمكانية استعادتها</li>
+                        <li><strong>الإعدادات (Settings):</strong> لتغيير إعدادات الجهاز، ويُفتح بالاختصار Win+I</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>7. الملفات والمجلدات</h3>
+                    <p><strong>الملف:</strong> مجموعة من البيانات المحفوظة تحت اسم وامتداد.</p>
+                    <p><strong>المجلد:</strong> حاوية تنظم الملفات والمجلدات الأخرى، ويمكن أن يحتوي على مجلدات فرعية.</p>
+                    <p><strong>المسار (Path):</strong> العنوان الكامل للملف داخل الحاسوب، مثل: C:\Users\Documents\report.docx</p>
+                    <table>
+                        <tr><th>الامتداد</th><th>نوع الملف</th></tr>
+                        <tr><td>.docx</td><td>مستند Word</td></tr>
+                        <tr><td>.xlsx</td><td>جدول بيانات Excel</td></tr>
+                        <tr><td>.pptx</td><td>عرض تقديمي PowerPoint</td></tr>
+                        <tr><td>.pdf</td><td>ملف PDF للعرض والطباعة</td></tr>
+                        <tr><td>.jpg / .png</td><td>صور</td></tr>
+                        <tr><td>.mp4</td><td>فيديو</td></tr>
+                        <tr><td>.zip</td><td>ملف مضغوط يحتوي على ملفات متعددة</td></tr>
+                    </table>
+                </div>
+
+                <div class="example-box">
+                    <h4>عمليات إدارة الملفات بالخطوات</h4>
+                    <pre>إنشاء مجلد جديد:
+1. افتح مستكشف الملفات (Win+E)
+2. انتقل إلى المكان المطلوب
+3. اضغط Ctrl+Shift+N
+4. اكتب اسم المجلد واضغط Enter
+
+إعادة تسمية ملف:
+1. حدد الملف
+2. اضغط F2
+3. اكتب الاسم الجديد واضغط Enter
+
+نسخ ونقل ملف:
+- نسخ: Ctrl+C ثم Ctrl+V في المكان الجديد
+- نقل: Ctrl+X ثم Ctrl+V في المكان الجديد
+
+حذف ملف:
+- Delete ينقل الملف إلى سلة المحذوفات
+- Shift+Delete يحذفه نهائياً دون سلة المحذوفات</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>8. تثبيت البرامج (Installing Software)</h3>
+                    <p>تثبيت البرنامج يعني نسخه إلى الحاسوب وإعداده ليعمل مع نظام التشغيل. اتبع الخطوات التالية:</p>
+                    <ul class="list-items">
+                        <li><strong>1. التأكد من المتطلبات:</strong> تحقق من أن الحاسوب يلبي متطلبات البرنامج (المعالج، الذاكرة RAM، المساحة الفارغة، نظام التشغيل)</li>
+                        <li><strong>2. التحميل من مصدر موثوق:</strong> حمّل البرنامج من موقعه الرسمي أو من متجر التطبيقات الرسمي مثل Microsoft Store</li>
+                        <li><strong>3. تشغيل ملف التثبيت:</strong> افتح الملف الذي غالباً ينتهي بالامتداد .exe أو .msi</li>
+                        <li><strong>4. قبول شروط الاستخدام:</strong> اقرأ اتفاقية الترخيص ووافق عليها للمتابعة</li>
+                        <li><strong>5. اختيار مكان التثبيت:</strong> يفضل الإبقاء على المسار الافتراضي ما لم تكن لديك حاجة محددة</li>
+                        <li><strong>6. إدخال مفتاح الترخيص:</strong> إذا كان البرنامج مدفوعاً، أدخل مفتاح المنتج عند الطلب</li>
+                        <li><strong>7. انتظار اكتمال التثبيت ثم إنهاؤه:</strong> وقد يُطلب منك إعادة تشغيل الحاسوب</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>مثال: تثبيت برنامج من Microsoft Store</h4>
+                    <pre>1. افتح Microsoft Store من قائمة ابدأ
+2. ابحث عن اسم البرنامج (مثلاً: Notepad)
+3. اضغط على زر Get أو Install
+4. انتظر حتى يكتمل التحميل والتثبيت
+5. يظهر البرنامج في قائمة ابدأ ويصبح جاهزاً للاستخدام</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>9. إلغاء تثبيت البرامج وتحديثها</h3>
+                    <ul class="list-items">
+                        <li><strong>إلغاء التثبيت:</strong> Settings ← Apps ← Installed apps ← اختر البرنامج ← Uninstall</li>
+                        <li><strong>التحديث:</strong> معظم البرامج تتحدث تلقائياً، ويمكن التحقق يدوياً من داخل البرنامج أو من Microsoft Store (Library ← Get updates)</li>
+                        <li><strong>أهمية التحديث:</strong> التحديثات تصلح الأخطاء وتحسن الأداء وتضيف ميزات جديدة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>10. تثبيت الأجهزة الخارجية (الطابعة مثالاً)</h3>
+                    <ul class="list-items">
+                        <li><strong>التوصيل:</strong> وصّل الجهاز بالحاسوب عبر USB أو بالشبكة اللاسلكية</li>
+                        <li><strong>التعرف التلقائي (Plug and Play):</strong> يتعرف Windows على معظم الأجهزة الحديثة ويثبت تعريفها تلقائياً</li>
+                        <li><strong>تثبيت التعريف (Driver):</strong> إذا لم يتعرف النظام على الجهاز، ثبّت التعريف من موقع الشركة المصنعة</li>
+                        <li><strong>تحديد الطابعة الافتراضية:</strong> من الإعدادات ← Bluetooth & devices ← Printers & scanners</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>11. اختصارات لوحة المفاتيح العامة</h3>
+                    <table>
+                        <tr><th>الاختصار</th><th>الوظيفة</th></tr>
+                        <tr><td>Ctrl+C</td><td>نسخ العنصر المحدد</td></tr>
+                        <tr><td>Ctrl+X</td><td>قص العنصر المحدد</td></tr>
+                        <tr><td>Ctrl+V</td><td>لصق العنصر</td></tr>
+                        <tr><td>Ctrl+Z</td><td>التراجع عن آخر عملية</td></tr>
+                        <tr><td>Ctrl+Y</td><td>إعادة آخر عملية تم التراجع عنها</td></tr>
+                        <tr><td>Ctrl+A</td><td>تحديد الكل</td></tr>
+                        <tr><td>Ctrl+S</td><td>حفظ الملف</td></tr>
+                        <tr><td>Ctrl+F</td><td>البحث داخل المحتوى</td></tr>
+                        <tr><td>Ctrl+P</td><td>الطباعة</td></tr>
+                        <tr><td>F2</td><td>إعادة تسمية العنصر المحدد</td></tr>
+                        <tr><td>F5</td><td>تحديث الصفحة أو المجلد</td></tr>
+                        <tr><td>Delete</td><td>نقل العنصر إلى سلة المحذوفات</td></tr>
+                        <tr><td>Shift+Delete</td><td>حذف نهائي دون المرور بسلة المحذوفات</td></tr>
+                        <tr><td>Alt+Tab</td><td>التنقل بين البرامج المفتوحة</td></tr>
+                        <tr><td>Alt+F4</td><td>إغلاق البرنامج الحالي</td></tr>
+                        <tr><td>Win</td><td>فتح قائمة ابدأ</td></tr>
+                        <tr><td>Win+D</td><td>إظهار سطح المكتب وإخفاء النوافذ</td></tr>
+                        <tr><td>Win+E</td><td>فتح مستكشف الملفات</td></tr>
+                        <tr><td>Win+L</td><td>قفل الجهاز</td></tr>
+                        <tr><td>Win+I</td><td>فتح الإعدادات</td></tr>
+                        <tr><td>Win+Shift+S</td><td>التقاط جزء من الشاشة</td></tr>
+                        <tr><td>Ctrl+Shift+Esc</td><td>فتح مدير المهام</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>12. الصيانة والنسخ الاحتياطي</h3>
+                    <ul class="list-items">
+                        <li><strong>تنظيف القرص (Disk Cleanup):</strong> لحذف الملفات المؤقتة وتوفير المساحة</li>
+                        <li><strong>إعادة التشغيل المنتظم:</strong> يساعد على تحرير الذاكرة وتطبيق التحديثات</li>
+                        <li><strong>النسخ الاحتياطي (Backup):</strong> نسخ الملفات المهمة إلى قرص خارجي أو خدمة تخزين سحابية للحماية من الفقدان</li>
+                        <li><strong>إدارة المساحة:</strong> الحفاظ على مساحة فارغة كافية في القرص يحسن الأداء</li>
+                    </ul>
+                </div>
+
+                <div class="questions-container">
+                    <h3>أسئلة التقييم</h3>
+                    <div id="principles-quiz"></div>
+                    <div id="principles-results" class="results"></div>
+                </div>
+            </div>
+
+            <!-- ===================== Word ===================== -->
+            <div id="word" class="section">
+                <h2>برنامج Microsoft Word</h2>
+                <div class="progress-bar"><div class="progress-fill" id="word-progress"></div></div>
+
+                <div class="theory-box">
+                    <h3>1. واجهة Word</h3>
+                    <ul class="list-items">
+                        <li><strong>شريط الوصول السريع (Quick Access Toolbar):</strong> أعلى النافذة ويحتوي على أوامر مفضلة مثل الحفظ والتراجع</li>
+                        <li><strong>الشريط (Ribbon):</strong> يحتوي على تبويبات: ملف (File)، الصفحة الرئيسية (Home)، إدراج (Insert)، تصميم (Design)، تخطيط الصفحة (Layout)، المراجع (References)، المراسلات (Mailings)، مراجعة (Review)، عرض (View)</li>
+                        <li><strong>منطقة المستند:</strong> المساحة التي تكتب فيها النصوص</li>
+                        <li><strong>المسطرة (Ruler):</strong> لضبط الهوامش والمسافات البادئة</li>
+                        <li><strong>شريط الحالة (Status Bar):</strong> يعرض عدد الصفحات وعدد الكلمات ومستوى التكبير</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>2. إنشاء المستندات وحفظها</h3>
+                    <table>
+                        <tr><th>العملية</th><th>الطريقة</th></tr>
+                        <tr><td>مستند جديد</td><td>Ctrl+N أو File ← New</td></tr>
+                        <tr><td>فتح مستند</td><td>Ctrl+O أو File ← Open</td></tr>
+                        <tr><td>حفظ</td><td>Ctrl+S أو File ← Save</td></tr>
+                        <tr><td>حفظ باسم جديد</td><td>File ← Save As ثم اختر الموقع والصيغة</td></tr>
+                        <tr><td>إغلاق المستند</td><td>Ctrl+W أو File ← Close</td></tr>
+                        <tr><td>طباعة</td><td>Ctrl+P</td></tr>
+                    </table>
+                    <p><strong>الصيغ الشائعة للحفظ:</strong> .docx (الصيغة الافتراضية)، .pdf (للعرض والطباعة الثابتة)، .doc (للتوافق مع إصدارات قديمة)، .dotx (قالب قابل لإعادة الاستخدام).</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>3. تحديد النص وتحريره</h3>
+                    <ul class="list-items">
+                        <li><strong>تحديد كلمة:</strong> انقر نقرتين عليها</li>
+                        <li><strong>تحديد فقرة:</strong> انقر ثلاث نقرات عليها</li>
+                        <li><strong>تحديد كل النص:</strong> Ctrl+A</li>
+                        <li><strong>تحديد بالكيبورد:</strong> Shift مع الأسهم لتحديد نص أو Ctrl+Shift مع الأسهم لتحديد كلمات</li>
+                        <li><strong>التراجع وإعادة:</strong> Ctrl+Z للتراجع و Ctrl+Y لإعادة العملية</li>
+                        <li><strong>خيارات اللصق:</strong> بعد اللصق تظهر أيقونة تتيح الاحتفاظ بالتنسيق الأصلي أو مطابقة تنسيق المكان الجديد أو لصق نص فقط</li>
+                        <li><strong>نسخ التنسيق (Format Painter):</strong> انسخ تنسيق نص وطبقه على نص آخر بضغطة واحدة من تبويب Home</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>4. تنسيق الخط (Font)</h3>
+                    <table>
+                        <tr><th>التنسيق</th><th>الاختصار</th></tr>
+                        <tr><td>غامق (Bold)</td><td>Ctrl+B</td></tr>
+                        <tr><td>مائل (Italic)</td><td>Ctrl+I</td></tr>
+                        <tr><td>تسطير (Underline)</td><td>Ctrl+U</td></tr>
+                        <tr><td>تكبير حجم الخط</td><td>Ctrl+Shift+&gt;</td></tr>
+                        <tr><td>تصغير حجم الخط</td><td>Ctrl+Shift+&lt;</td></tr>
+                        <tr><td>أس علوي (Superscript)</td><td>Ctrl+Shift+=</td></tr>
+                        <tr><td>أس سفلي (Subscript)</td><td>Ctrl+=</td></tr>
+                    </table>
+                    <p>يمكن تغيير نوع الخط ولونه وتأثيراته من مجموعة Font في تبويب Home أو من نافذة Font بالضغط على Ctrl+D.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>5. تنسيق الفقرات (Paragraph)</h3>
+                    <table>
+                        <tr><th>المحاذاة</th><th>الاختصار</th></tr>
+                        <tr><td>يسار (Left)</td><td>Ctrl+L</td></tr>
+                        <tr><td>توسيط (Center)</td><td>Ctrl+E</td></tr>
+                        <tr><td>يمين (Right)</td><td>Ctrl+R</td></tr>
+                        <tr><td>ضبط (Justify)</td><td>Ctrl+J</td></tr>
+                    </table>
+                    <ul class="list-items">
+                        <li><strong>تباعد الأسطر:</strong> Ctrl+1 لتباعد مفرد، Ctrl+2 لمزدوج، Ctrl+5 لتباعد 1.5</li>
+                        <li><strong>المسافة البادئة (Indent):</strong> تحديد بداية الفقرة من الجهة اليمنى أو اليسرى من تبويب Layout أو المسطرة</li>
+                        <li><strong>الحدود والتظليل:</strong> من تبويب Home ← زر Borders أو Shading</li>
+                        <li><strong>إظهار الرموز المخفية:</strong> Ctrl+Shift+* لرؤية علامات الفقرات والمسافات</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>6. القوائم النقطية والمرقمة</h3>
+                    <ul class="list-items">
+                        <li><strong>قائمة نقطية (Bullets):</strong> من تبويب Home ← زر Bullets</li>
+                        <li><strong>قائمة مرقمة (Numbering):</strong> من تبويب Home ← زر Numbering</li>
+                        <li><strong>قائمة متعددة المستويات:</strong> اضغط Tab لزيادة المستوى و Shift+Tab لإنقاصه</li>
+                        <li><strong>إنهاء القائمة:</strong> اضغط Enter مرتين متتاليتين</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>7. الأنماط والعناوين (Styles)</h3>
+                    <p>الأنماط (Styles) هي تنسيقات جاهزة ومتسقة تطبق على الفقرات. الأنماط الأكثر استخداماً:</p>
+                    <ul class="list-items">
+                        <li><strong>Normal:</strong> النمط الافتراضي لنص الفقرات</li>
+                        <li><strong>Title:</strong> عنوان المستند الرئيسي</li>
+                        <li><strong>Heading 1 / Heading 2 / Heading 3:</strong> عناوين الأقسام بمستويات مختلفة</li>
+                    </ul>
+                    <p>استخدام العناوين بشكل صحيح يسهّل التنقل في المستند من لوحة Navigation Pane (Ctrl+F ← السهم) ويسمح بإنشاء فهرس محتويات تلقائي.</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>مثال: تنظيم تقرير بالعناوين</h4>
+                    <pre>العنوان الرئيسي للتقرير      ← Title
+1. مقدمة                       ← Heading 1
+   1.1 الأهداف                 ← Heading 2
+   1.2 النطاق                  ← Heading 2
+2. التحليل                     ← Heading 1
+   2.1 البيانات                ← Heading 2
+   2.1.1 مصدر البيانات         ← Heading 3
+3. الخلاصة                     ← Heading 1</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>8. تخطيط الصفحة (Layout)</h3>
+                    <ul class="list-items">
+                        <li><strong>الهوامش (Margins):</strong> من تبويب Layout ← Margins</li>
+                        <li><strong>الاتجاه (Orientation):</strong> عمودي (Portrait) أو أفقي (Landscape)</li>
+                        <li><strong>حجم الصفحة (Size):</strong> A4 هو الأكثر استخداماً</li>
+                        <li><strong>الأعمدة (Columns):</strong> تقسيم الصفحة إلى عمودين أو أكثر كما في الصحف</li>
+                        <li><strong>فاصل الصفحة (Page Break):</strong> Ctrl+Enter لبدء صفحة جديدة</li>
+                        <li><strong>الرأس والتذييل (Header & Footer):</strong> نصوص تتكرر في أعلى كل صفحة أو أسفلها، مثل اسم المؤسسة أو رقم الصفحة</li>
+                        <li><strong>أرقام الصفحات:</strong> Insert ← Page Number</li>
+                        <li><strong>العلامة المائية (Watermark):</strong> Design ← Watermark</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>9. الجداول (Tables)</h3>
+                    <ul class="list-items">
+                        <li><strong>إدراج جدول:</strong> Insert ← Table ثم حدد عدد الصفوف والأعمدة</li>
+                        <li><strong>إضافة صف أو عمود:</strong> انقر داخل الجدول ثم استخدم تبويب Layout</li>
+                        <li><strong>دمج الخلايا (Merge Cells):</strong> حدد الخلايا ← Layout ← Merge Cells</li>
+                        <li><strong>تنسيق الجدول:</strong> من تبويب Table Design يمكن اختيار أنماط جاهزة وألوان وحدود</li>
+                        <li><strong>ترتيب البيانات:</strong> Layout ← Sort</li>
+                        <li><strong>معادلة داخل الجدول:</strong> Layout ← Formula، مثال: =SUM(ABOVE) لجمع الأرقام أعلى الخلية</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>10. الصور والأشكال والعناصر الإضافية</h3>
+                    <ul class="list-items">
+                        <li><strong>الصور:</strong> Insert ← Pictures لإدراج صورة من الجهاز</li>
+                        <li><strong>الأشكال (Shapes):</strong> مربعات ودوائر وأسهم من Insert ← Shapes</li>
+                        <li><strong>مربع النص (Text Box):</strong> لوضع نص في مكان حر داخل الصفحة</li>
+                        <li><strong>التفاف النص (Wrap Text):</strong> يحدد طريقة ظهور النص حول الصورة، مثل Square أو Top and Bottom</li>
+                        <li><strong>التسمية التوضيحية (Caption):</strong> References ← Insert Caption لإضافة رقم ووصف للصورة أو الجدول</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>11. المراجع والفهرس (References)</h3>
+                    <ul class="list-items">
+                        <li><strong>فهرس المحتويات (Table of Contents):</strong> References ← Table of Contents، ويُنشأ تلقائياً من عناوين Heading</li>
+                        <li><strong>تحديث الفهرس:</strong> انقر على الفهرس ← Update Table ← اختر تحديث كامل أو أرقام الصفحات فقط</li>
+                        <li><strong>الحاشية السفلية (Footnote):</strong> Ctrl+Alt+F لإضافة ملاحظة في أسفل الصفحة</li>
+                        <li><strong>الاقتباسات والمراجع:</strong> References ← Insert Citation و Bibliography</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>12. المراجعة والبحث والاستبدال</h3>
+                    <ul class="list-items">
+                        <li><strong>البحث (Find):</strong> Ctrl+F</li>
+                        <li><strong>البحث والاستبدال (Replace):</strong> Ctrl+H، ويمكن استبدال كل التكرارات دفعة واحدة بزر Replace All</li>
+                        <li><strong>التدقيق الإملائي:</strong> F7 أو من تبويب Review ← Spelling & Grammar</li>
+                        <li><strong>التعليقات (Comments):</strong> Review ← New Comment لترك ملاحظات للمراجعين</li>
+                        <li><strong>تتبع التغييرات (Track Changes):</strong> Ctrl+Shift+E لتفعيل تسجيل التعديلات، وتظهر التعديلات بلون مختلف</li>
+                        <li><strong>عدد الكلمات:</strong> يظهر في شريط الحالة أو من Review ← Word Count</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>13. الطباعة والتصدير</h3>
+                    <ul class="list-items">
+                        <li><strong>معاينة الطباعة:</strong> File ← Print يعرض شكل الصفحات قبل الطباعة</li>
+                        <li><strong>تحديد الصفحات:</strong> يمكن طباعة صفحات محددة مثل 2-5 أو 1,3,7</li>
+                        <li><strong>حفظ كـ PDF:</strong> File ← Export ← Create PDF/XPS أو اختر PDF من Save As</li>
+                        <li><strong>عدد النسخ:</strong> من نافذة الطباعة حدد Copies</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>مثال عملي: إعداد خطاب رسمي خطوة بخطوة</h4>
+                    <pre>1. Ctrl+N لإنشاء مستند جديد
+2. Layout ← Margins ← Normal لضبط الهوامش
+3. اكتب عنوان الخطاب واختر النمط Title
+4. اكتب نص الخطاب ثم حدده واختر خط Arial حجم 12
+5. Ctrl+J لضبط الفقرات أو Ctrl+E للتوسيط للعنوان
+6. Insert ← Header لإضافة شعار أو اسم المؤسسة
+7. Insert ← Page Number لإضافة أرقام الصفحات
+8. Ctrl+S لحفظ الملف باسم واضح</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>14. جدول اختصارات Word الهامة</h3>
+                    <table>
+                        <tr><th>الاختصار</th><th>الوظيفة</th></tr>
+                        <tr><td>Ctrl+N</td><td>مستند جديد</td></tr>
+                        <tr><td>Ctrl+O</td><td>فتح مستند</td></tr>
+                        <tr><td>Ctrl+S</td><td>حفظ</td></tr>
+                        <tr><td>Ctrl+W</td><td>إغلاق المستند</td></tr>
+                        <tr><td>Ctrl+Z</td><td>تراجع</td></tr>
+                        <tr><td>Ctrl+Y</td><td>إعادة</td></tr>
+                        <tr><td>Ctrl+B / I / U</td><td>غامق / مائل / تسطير</td></tr>
+                        <tr><td>Ctrl+E / L / R / J</td><td>توسيط / يسار / يمين / ضبط</td></tr>
+                        <tr><td>Ctrl+Enter</td><td>فاصل صفحة</td></tr>
+                        <tr><td>Ctrl+F / Ctrl+H</td><td>بحث / بحث واستبدال</td></tr>
+                        <tr><td>F7</td><td>التدقيق الإملائي</td></tr>
+                        <tr><td>Ctrl+Shift+E</td><td>تفعيل تتبع التغييرات</td></tr>
+                        <tr><td>Ctrl+K</td><td>إدراج رابط تشعبي</td></tr>
+                    </table>
+                </div>
+
+                <div class="questions-container">
+                    <h3>أسئلة التقييم</h3>
+                    <div id="word-quiz"></div>
+                    <div id="word-results" class="results"></div>
+                </div>
+            </div>
+
+            <!-- ===================== Excel ===================== -->
+            <div id="excel" class="section">
+                <h2>برنامج Microsoft Excel - شرح متقدم</h2>
+                <div class="progress-bar"><div class="progress-fill" id="excel-progress"></div></div>
+
+                <div class="theory-box">
+                    <h3>1. أساسيات Excel</h3>
+                    <ul class="list-items">
+                        <li><strong>المصنف (Workbook):</strong> ملف Excel كامل ويحتوي على أوراق متعددة</li>
+                        <li><strong>الورقة (Sheet):</strong> جدول فردي داخل المصنف</li>
+                        <li><strong>الخلية (Cell):</strong> تقاطع صف وعمود، مثل B3</li>
+                        <li><strong>النطاق (Range):</strong> مجموعة خلايا متصلة، مثل A1:C10</li>
+                        <li><strong>الخلية النشطة (Active Cell):</strong> الخلية المحددة حالياً</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>2. مراجع الخلايا: نسبية ومطلقة</h3>
+                    <ul class="list-items">
+                        <li><strong>المرجع النسبي (Relative):</strong> مثل A1، يتغير عند نسخ الصيغة إلى مكان آخر</li>
+                        <li><strong>المرجع المطلق (Absolute):</strong> مثل $A$1، يبقى ثابتاً عند النسخ. يُكتب بالضغط على F4</li>
+                        <li><strong>المرجع المختلط (Mixed):</strong> مثل $A1 أو A$1، يثبت العمود أو الصف فقط</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>مثال: الفرق بين النسبي والمطلق</h4>
+                    <pre>لديك سعر المنتج في B2 ونسبة الضريبة في D1 (مثلاً 15%)
+
+=B2*D1     ← عند نسخها إلى B3 تصبح =B3*D2  ✗ خطأ
+=B2*$D$1   ← عند نسخها إلى B3 تصبح =B3*$D$1 ✓ صحيح</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>3. إدخال البيانات وتعديلها</h3>
+                    <ul class="list-items">
+                        <li><strong>الانتقال بين الخلايا:</strong> Enter للأسفل، Tab لليمين، ومع Shift للعكس</li>
+                        <li><strong>تعديل الخلية:</strong> F2 أو النقر المزدوج</li>
+                        <li><strong>مقبض التعبئة (Fill Handle):</strong> المربع الصغير في زاوية الخلية، اسحبه لنسخ القيم أو الصيغ</li>
+                        <li><strong>التعبئة التلقائية (AutoFill):</strong> تكملة تسلسلات مثل الأيام والأشهر والأرقام</li>
+                        <li><strong>التراجع:</strong> Ctrl+Z، وإعادة Ctrl+Y</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>4. الصيغ والعمليات الحسابية</h3>
+                    <p>كل صيغة تبدأ بعلامة المساواة =. الترتيب الافتراضي للعمليات:</p>
+                    <table>
+                        <tr><th>الأولوية</th><th>العملية</th><th>الرمز</th><th>مثال</th></tr>
+                        <tr><td>1</td><td>الأقواس</td><td>()</td><td>=(A1+B1)*2</td></tr>
+                        <tr><td>2</td><td>الأس</td><td>^</td><td>=A1^3</td></tr>
+                        <tr><td>3</td><td>الضرب والقسمة</td><td>* /</td><td>=A1*B1</td></tr>
+                        <tr><td>4</td><td>الجمع والطرح</td><td>+ -</td><td>=A1+B1</td></tr>
+                        <tr><td>-</td><td>ربط النصوص</td><td>&amp;</td><td>=A1&amp;" "&amp;B1</td></tr>
+                    </table>
+                </div>
+
+                <div class="example-box">
+                    <h4>أمثلة على أولويات العمليات</h4>
+                    <pre>=2+3*4         → 14   (الضرب قبل الجمع)
+=10-2^3        → 2    (الأس قبل الطرح)
+=(2+3)*4       → 20   (الأقواس أولاً)
+=100/2+3*4     → 62   (50 + 12)</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>5. الدوال الإحصائية</h3>
+                    <table>
+                        <tr><th>الدالة</th><th>الوصف</th><th>مثال</th></tr>
+                        <tr><td>SUM</td><td>مجموع الأرقام</td><td>=SUM(A1:A10)</td></tr>
+                        <tr><td>AVERAGE</td><td>المتوسط الحسابي</td><td>=AVERAGE(A1:A10)</td></tr>
+                        <tr><td>COUNT</td><td>عدد الخلايا التي تحتوي أرقاماً فقط</td><td>=COUNT(A1:A10)</td></tr>
+                        <tr><td>COUNTA</td><td>عدد الخلايا غير الفارغة (أي نوع)</td><td>=COUNTA(A1:A10)</td></tr>
+                        <tr><td>COUNTBLANK</td><td>عدد الخلايا الفارغة</td><td>=COUNTBLANK(A1:A10)</td></tr>
+                        <tr><td>MAX / MIN</td><td>أكبر قيمة / أصغر قيمة</td><td>=MAX(A1:A10)</td></tr>
+                        <tr><td>MEDIAN</td><td>الوسيط (القيمة الوسطى)</td><td>=MEDIAN(A1:A10)</td></tr>
+                        <tr><td>MODE</td><td>القيمة الأكثر تكراراً</td><td>=MODE(A1:A10)</td></tr>
+                        <tr><td>STDEV</td><td>الانحراف المعياري</td><td>=STDEV(A1:A10)</td></tr>
+                        <tr><td>PRODUCT</td><td>حاصل ضرب الأرقام</td><td>=PRODUCT(A1:A3)</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>6. دوال الأرقام والتقريب</h3>
+                    <table>
+                        <tr><th>الدالة</th><th>الوصف</th><th>مثال</th><th>النتيجة</th></tr>
+                        <tr><td>ROUND</td><td>تقريب إلى عدد محدد من الخانات</td><td>=ROUND(3.456,2)</td><td>3.46</td></tr>
+                        <tr><td>ROUNDUP</td><td>تقريب لأعلى دائماً</td><td>=ROUNDUP(3.41,1)</td><td>3.5</td></tr>
+                        <tr><td>ROUNDDOWN</td><td>تقريب لأسفل دائماً</td><td>=ROUNDDOWN(3.49,1)</td><td>3.4</td></tr>
+                        <tr><td>INT</td><td>الجزء الصحيح فقط</td><td>=INT(7.8)</td><td>7</td></tr>
+                        <tr><td>MOD</td><td>باقي القسمة</td><td>=MOD(10,3)</td><td>1</td></tr>
+                        <tr><td>ABS</td><td>القيمة المطلقة</td><td>=ABS(-5)</td><td>5</td></tr>
+                        <tr><td>SQRT</td><td>الجذر التربيعي</td><td>=SQRT(81)</td><td>9</td></tr>
+                        <tr><td>POWER</td><td>رفع العدد لأس</td><td>=POWER(2,4)</td><td>16</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>7. الدوال المنطقية والشرطية</h3>
+                    <p><strong>IF:</strong> =IF(الشرط، القيمة_إذا_صحيح، القيمة_إذا_خاطئ)</p>
+                    <p><strong>AND:</strong> تكون النتيجة صحيحة إذا تحقق <u>كل</u> الشروط</p>
+                    <p><strong>OR:</strong> تكون النتيجة صحيحة إذا تحقق <u>أحد</u> الشروط</p>
+                    <p><strong>NOT:</strong> تعكس نتيجة الشرط</p>
+                    <p><strong>IFS:</strong> شروط متعددة دون تداخل IF: =IFS(شرط1، قيمة1، شرط2، قيمة2، ...)</p>
+                    <p><strong>SWITCH:</strong> مقارنة قيمة واحدة مع عدة خيارات: =SWITCH(A1، 1، "الأحد"، 2، "الاثنين"، "غير معروف")</p>
+                    <p><strong>IFERROR:</strong> تعرض قيمة بديلة إذا كانت الصيغة تسبب خطأ: =IFERROR(A1/B1، 0)</p>
+                    <p>عوامل المقارنة: = يساوي، &lt;&gt; لا يساوي، &gt; أكبر، &lt; أصغر، &gt;= أكبر أو يساوي، &lt;= أصغر أو يساوي</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>أمثلة على الدوال الشرطية</h4>
+                    <pre>=IF(A2&gt;=60, "نجح", "رسب")
+
+=IF(AND(A2&gt;=80, B2&gt;=90), "مؤهل للمنحة", "غير مؤهل")
+
+=IF(OR(C2&gt;1000, D2="VIP"), "خصم 10%", "بدون خصم")
+
+=IF(NOT(A2&lt;50), "مقبول", "ضعيف")
+
+=IFS(A2&gt;=90,"ممتاز", A2&gt;=80,"جيد جداً", A2&gt;=70,"جيد", A2&gt;=60,"مقبول", TRUE,"ضعيف")
+
+=IFERROR(VLOOKUP(E2, A:B, 2, FALSE), "غير موجود")</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>8. دوال الجمع والعد والمتوسط بشرط</h3>
+                    <table>
+                        <tr><th>الدالة</th><th>الوظيفة</th><th>الصيغة</th></tr>
+                        <tr><td>SUMIF</td><td>جمع بشرط واحد</td><td>=SUMIF(نطاق_الشرط، الشرط، نطاق_الجمع)</td></tr>
+                        <tr><td>SUMIFS</td><td>جمع بعدة شروط</td><td>=SUMIFS(نطاق_الجمع، نطاق1، شرط1، نطاق2، شرط2)</td></tr>
+                        <tr><td>COUNTIF</td><td>عد بشرط واحد</td><td>=COUNTIF(النطاق، الشرط)</td></tr>
+                        <tr><td>COUNTIFS</td><td>عد بعدة شروط</td><td>=COUNTIFS(نطاق1، شرط1، نطاق2، شرط2)</td></tr>
+                        <tr><td>AVERAGEIF</td><td>متوسط بشرط واحد</td><td>=AVERAGEIF(النطاق، الشرط، نطاق_المتوسط)</td></tr>
+                        <tr><td>AVERAGEIFS</td><td>متوسط بعدة شروط</td><td>=AVERAGEIFS(نطاق_المتوسط، نطاق1، شرط1، ...)</td></tr>
+                        <tr><td>MAXIFS / MINIFS</td><td>أكبر أو أصغر قيمة بشرط</td><td>=MAXIFS(نطاق_القيم، نطاق_الشرط، الشرط)</td></tr>
+                    </table>
+                </div>
+
+                <div class="example-box">
+                    <h4>مثال عملي: جدول مبيعات</h4>
+                    <pre>A: المنطقة | B: المنتج | C: الكمية | D: السعر
+
+=SUMIF(B:B, "تفاح", C:C)                 → مجموع كميات التفاح
+=COUNTIF(C:C, "&gt;100")                   → عدد المبيعات التي تزيد عن 100
+=SUMIFS(C:C, A:A, "الشمال", B:B, "تفاح") → كميات التفاح في الشمال فقط
+=COUNTIFS(C:C, "&gt;500", A:A, "الجنوب")   → عدد مبيعات الجنوب الأكبر من 500
+=AVERAGEIF(B:B, "برتقال", D:D)           → متوسط سعر البرتقال
+=MAXIFS(D:D, A:A, "الشرق")               → أعلى سعر في الشرق</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>9. دوال البحث والمرجع</h3>
+                    <p><strong>VLOOKUP:</strong> تبحث عن قيمة في العمود الأول من الجدول وتعيد قيمة من عمود آخر في نفس الصف.</p>
+                    <p><strong>الصيغة:</strong> =VLOOKUP(القيمة، الجدول، رقم_العمود، [FALSE للمطابقة الدقيقة])</p>
+                    <p><strong>HLOOKUP:</strong> مثل VLOOKUP لكن البحث في الصف الأول أفقياً.</p>
+                    <p><strong>INDEX و MATCH:</strong> تعتبر بديلاً أكثر مرونة: INDEX يعيد قيمة من موقع محدد، وMATCH يحدد موقع القيمة.</p>
+                    <p><strong>XLOOKUP:</strong> دالة حديثة تبسط البحث: =XLOOKUP(القيمة، عمود_البحث، عمود_النتيجة)</p>
+                </div>
+
+                <div class="example-box">
+                    <h4>أمثلة على دوال البحث</h4>
+                    <pre>جدول المنتجات:
+A: الكود | B: اسم المنتج | C: السعر
+
+=VLOOKUP(10002, A:C, 3, FALSE)        → سعر المنتج صاحب الكود 10002
+=INDEX(C:C, MATCH(10002, A:A, 0))     → نفس النتيجة بطريقة INDEX وMATCH
+=XLOOKUP(10002, A:A, C:C)             → نفس النتيجة بالدالة الحديثة</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>10. دوال النصوص</h3>
+                    <table>
+                        <tr><th>الدالة</th><th>الوصف</th><th>مثال</th><th>النتيجة</th></tr>
+                        <tr><td>LEN</td><td>عدد الأحرف</td><td>=LEN("مرحبا")</td><td>5</td></tr>
+                        <tr><td>LEFT</td><td>أول عدد من الأحرف</td><td>=LEFT("مرحبا",2)</td><td>مر</td></tr>
+                        <tr><td>RIGHT</td><td>آخر عدد من الأحرف</td><td>=RIGHT("مرحبا",2)</td><td>با</td></tr>
+                        <tr><td>MID</td><td>جزء من النص من موقع محدد</td><td>=MID("مرحبا",2,2)</td><td>رح</td></tr>
+                        <tr><td>UPPER / LOWER</td><td>تحويل الأحرف الإنجليزية</td><td>=UPPER("excel")</td><td>EXCEL</td></tr>
+                        <tr><td>PROPER</td><td>أول حرف من كل كلمة كبير</td><td>=PROPER("ahmed ali")</td><td>Ahmed Ali</td></tr>
+                        <tr><td>TRIM</td><td>حذف المسافات الزائدة</td><td>=TRIM("  نص   ")</td><td>نص</td></tr>
+                        <tr><td>FIND</td><td>موقع نص داخل نص آخر</td><td>=FIND("ح","مرحبا")</td><td>3</td></tr>
+                        <tr><td>SUBSTITUTE</td><td>استبدال نص محدد</td><td>=SUBSTITUTE(A1,"قديم","جديد")</td><td>—</td></tr>
+                        <tr><td>TEXTJOIN</td><td>دمج نصوص مع فاصل</td><td>=TEXTJOIN(" - ",TRUE,A1:A3)</td><td>—</td></tr>
+                        <tr><td>&amp; (علامة الربط)</td><td>دمج نصين</td><td>=A1&amp;" "&amp;B1</td><td>—</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>11. دوال التاريخ والوقت</h3>
+                    <table>
+                        <tr><th>الدالة</th><th>الوصف</th><th>مثال</th></tr>
+                        <tr><td>TODAY</td><td>التاريخ الحالي (يتحدث تلقائياً)</td><td>=TODAY()</td></tr>
+                        <tr><td>NOW</td><td>التاريخ والوقت الحاليان</td><td>=NOW()</td></tr>
+                        <tr><td>DATE</td><td>إنشاء تاريخ من السنة والشهر واليوم</td><td>=DATE(2026,10,30)</td></tr>
+                        <tr><td>YEAR / MONTH / DAY</td><td>استخراج السنة أو الشهر أو اليوم</td><td>=YEAR(A1)</td></tr>
+                        <tr><td>WEEKDAY</td><td>رقم اليوم في الأسبوع</td><td>=WEEKDAY(A1)</td></tr>
+                        <tr><td>DATEDIF</td><td>الفرق بين تاريخين بالأيام أو الأشهر أو السنوات</td><td>=DATEDIF(A1,B1,"d")</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>12. تنظيم البيانات والجداول الذكية</h3>
+                    <ul class="list-items">
+                        <li><strong>الترتيب (Sort):</strong> Data ← Sort، ويمكن الترتيب حسب أكثر من عمود</li>
+                        <li><strong>التصفية (Filter):</strong> Data ← Filter لإظهار الصفوف المطابقة فقط</li>
+                        <li><strong>الجدول الذكي (Format as Table):</strong> Ctrl+T، يوفر ترويسة ثابتة وتنسيقاً متناسقاً ونطاقاً يتوسع تلقائياً</li>
+                        <li><strong>تثبيت الصفوف والأعمدة (Freeze Panes):</strong> View ← Freeze Panes لإبقاء العناوين ظاهرة عند التمرير</li>
+                        <li><strong>إزالة التكرارات:</strong> Data ← Remove Duplicates</li>
+                        <li><strong>التحقق من البيانات (Data Validation):</strong> Data ← Data Validation لتحديد القيم المسموحة في الخلية، مثل قائمة منسدلة أو أرقام ضمن نطاق</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>13. التنسيق الشرطي (Conditional Formatting)</h3>
+                    <p>يغير شكل الخلية تلقائياً حسب قيمتها. من تبويب Home ← Conditional Formatting.</p>
+                    <ul class="list-items">
+                        <li><strong>تمييز القيم:</strong> مثل تلوين القيم الأكبر من 100 باللون الأخضر</li>
+                        <li><strong>أشرطة البيانات (Data Bars):</strong> أشرطة داخل الخلايا تتناسب مع قيمها</li>
+                        <li><strong>مقاييس الألوان (Color Scales):</strong> تدرج لوني يوضح الأعلى والأدنى</li>
+                        <li><strong>مجموعات الأيقونات (Icon Sets):</strong> أسهم أو إشارات ضوئية حسب القيمة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>14. المخططات البيانية والجداول المحورية</h3>
+                    <ul class="list-items">
+                        <li><strong>المخطط العمودي (Column):</strong> لمقارنة القيم بين فئات مختلفة</li>
+                        <li><strong>المخطط الخطي (Line):</strong> لعرض الاتجاهات عبر الزمن</li>
+                        <li><strong>المخطط الدائري (Pie):</strong> لعرض نسب الأجزاء من الكل</li>
+                        <li><strong>إنشاء المخطط:</strong> حدد البيانات ← Insert ← Charts</li>
+                        <li><strong>الجدول المحوري (PivotTable):</strong> يلخص كميات كبيرة من البيانات بالسحب والإفلات: Insert ← PivotTable</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>15. ميزات الذكاء الصنعي في Excel</h3>
+                    <ul class="list-items">
+                        <li><strong>Analyze Data (تحليل البيانات، المعروفة سابقاً بـ Ideas):</strong> يقترح تلقائياً مخططات وجداول محورية وملخصات للبيانات. من تبويب Home ← Analyze Data</li>
+                        <li><strong>Flash Fill (التعبئة السريعة):</strong> يتعلم من أمثلتك ويكمل النمط تلقائياً. اكتب مثالين ثم اضغط Ctrl+E</li>
+                        <li><strong>Copilot في Excel:</strong> مساعد ذكي يكتب الصيغ ويشرح البيانات وينشئ جداول وتحليلات بالطلب بلغة طبيعية</li>
+                        <li><strong>الاقتراحات الذكية للصيغ:</strong> يقترح Excel الصيغة المناسبة أثناء الكتابة</li>
+                        <li><strong>أنواع البيانات (Data Types):</strong> تحويل نص مثل اسم دولة أو شركة إلى بيانات مرتبطة يمكن استخراج معلوماتها</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>مثال عملي: استخدام Flash Fill</h4>
+                    <pre>العمود A: أحمد محمد علي / سارة خالد حسن / ...
+B1: أحمد      ← اكتبه يدوياً (الاسم الأول)
+B2: سارة      ← اكتبه يدوياً
+B3: اضغط Ctrl+E
+→ يملأ Excel بقية الأسماء الأولى تلقائياً</pre>
+                </div>
+
+                <div class="tip-box">
+                    <h4>نصيحة للامتحان</h4>
+                    <p>الفرق بين الدوال الشرطية: IF للشرط الواحد، IFS للشروط المتعددة، و SUMIFS وCOUNTIFS للجمع والعد بشروط متعددة على جداول البيانات.</p>
+                </div>
+
+                <div class="questions-container">
+                    <h3>أسئلة التقييم</h3>
+                    <div id="excel-quiz"></div>
+                    <div id="excel-results" class="results"></div>
+                </div>
+            </div>
+
+            <!-- ===================== PowerPoint ===================== -->
+            <div id="presentations" class="section">
+                <h2>برنامج Microsoft PowerPoint</h2>
+                <div class="progress-bar"><div class="progress-fill" id="presentations-progress"></div></div>
+
+                <div class="theory-box">
+                    <h3>1. أساسيات PowerPoint</h3>
+                    <ul class="list-items">
+                        <li><strong>الشريحة (Slide):</strong> صفحة واحدة من العرض التقديمي</li>
+                        <li><strong>العرض (Presentation):</strong> مجموعة من الشرائح</li>
+                        <li><strong>التخطيط (Layout):</strong> ترتيب العناصر داخل الشريحة مثل Title Slide وTitle and Content</li>
+                        <li><strong>الموضوع (Theme):</strong> الألوان والخطوط والتأثيرات الموحدة لكل الشرائح</li>
+                        <li><strong>ملاحظات المتحدث (Notes):</strong> نص يظهر للمقدم فقط أسفل الشريحة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>2. إضافة الشرائح وإدارتها</h3>
+                    <ul class="list-items">
+                        <li><strong>شريحة جديدة:</strong> Ctrl+M أو من تبويب Home ← New Slide</li>
+                        <li><strong>نسخ شريحة:</strong> Ctrl+D أو من القائمة بالضغط بزر الفأرة الأيمن</li>
+                        <li><strong>حذف شريحة:</strong> حدد الشريحة واضغط Delete</li>
+                        <li><strong>إعادة الترتيب:</strong> اسحب الشريحة في الجانب الأيسر إلى الموقع الجديد</li>
+                        <li><strong>إخفاء شريحة:</strong> Slide Show ← Hide Slide</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>3. إدراج العناصر</h3>
+                    <table>
+                        <tr><th>العنصر</th><th>المكان</th></tr>
+                        <tr><td>النص</td><td>Insert ← Text Box</td></tr>
+                        <tr><td>الصور</td><td>Insert ← Pictures</td></tr>
+                        <tr><td>الأشكال</td><td>Insert ← Shapes</td></tr>
+                        <tr><td>الجداول</td><td>Insert ← Table</td></tr>
+                        <tr><td>الرسوم البيانية</td><td>Insert ← Chart</td></tr>
+                        <tr><td>الفيديو والصوت</td><td>Insert ← Video / Audio</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>4. التصميم والمظهر</h3>
+                    <ul class="list-items">
+                        <li><strong>الموضوعات الجاهزة:</strong> من تبويب Design</li>
+                        <li><strong>الألوان والخطوط:</strong> Design ← Variants</li>
+                        <li><strong>خلفية الشريحة:</strong> Design ← Format Background</li>
+                        <li><strong>المحاذاة والتوزيع:</strong> تظهر خطوط إرشادية تساعد على ضبط العناصر، ويمكن استخدام Align من تبويب Shape Format</li>
+                        <li><strong>الشريحة الرئيسية (Slide Master):</strong> View ← Slide Master لتعديل التصميم لكل الشرائح مرة واحدة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>5. التأثيرات الانتقالية والحركات</h3>
+                    <ul class="list-items">
+                        <li><strong>Transitions:</strong> تأثيرات تظهر عند الانتقال من شريحة إلى أخرى مثل Fade وPush وWipe</li>
+                        <li><strong>Animations:</strong> حركات تطبق على عنصر داخل الشريحة مثل الظهور أو الطيران</li>
+                        <li><strong>تطبيق على الكل:</strong> Transitions ← Apply To All</li>
+                        <li><strong>توقيت العرض:</strong> Transitions ← After لتحديد الوقت التلقائي للانتقال</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>6. تشغيل العرض</h3>
+                    <table>
+                        <tr><th>الاختصار</th><th>الوظيفة</th></tr>
+                        <tr><td>F5</td><td>تشغيل العرض من البداية</td></tr>
+                        <tr><td>Shift+F5</td><td>تشغيل العرض من الشريحة الحالية</td></tr>
+                        <tr><td>Esc</td><td>إنهاء العرض</td></tr>
+                        <tr><td>السهم الأيمن / Space</td><td>الانتقال للشريحة التالية</td></tr>
+                        <tr><td>السهم الأيسر</td><td>الرجوع للشريحة السابقة</td></tr>
+                        <tr><td>B</td><td>شاشة سوداء أثناء العرض</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>7. الحفظ والتصدير والطباعة</h3>
+                    <ul class="list-items">
+                        <li><strong>الصيغة الافتراضية:</strong> .pptx</li>
+                        <li><strong>حفظ كـ PDF:</strong> File ← Export ← Create PDF أو Save As ← PDF</li>
+                        <li><strong>الطباعة:</strong> Ctrl+P ويمكن طباعة الشرائح مع الملاحظات أو عدة شرائح في صفحة واحدة</li>
+                        <li><strong>حفظ كفيديو:</strong> File ← Export ← Create a Video</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>مثال: إنشاء عرض تقديمي من الصفر</h4>
+                    <pre>1. Ctrl+N لعرض جديد
+2. اختر التخطيط Title Slide وأدخل عنوان العرض واسم المقدم
+3. Ctrl+M لإضافة شريحة جديدة بتخطيط Title and Content
+4. أضف النقاط الرئيسية كقائمة نقطية
+5. Design ← اختر موضوعاً مناسباً
+6. Insert ← Pictures لإضافة صورة توضيحية
+7. Transitions ← Fade ← Apply To All
+8. F5 لتجربة العرض
+9. File ← Save As ← PDF عند الحاجة</pre>
+                </div>
+
+                <div class="theory-box">
+                    <h3>8. ميزات الذكاء الصنعي في PowerPoint</h3>
+                    <ul class="list-items">
+                        <li><strong>Designer:</strong> يقترح تصاميم جاهزة للشريحة بناءً على المحتوى</li>
+                        <li><strong>Copilot في PowerPoint:</strong> ينشئ عرضاً كاملاً من وصف أو من ملف Word، ويقترح صياغة للشرائح</li>
+                        <li><strong>Speaker Coach:</strong> يعطي ملاحظات حول سرعة الكلام وعدد الكلمات أثناء التدريب</li>
+                    </ul>
+                </div>
+
+                <div class="questions-container">
+                    <h3>أسئلة التقييم</h3>
+                    <div id="presentations-quiz"></div>
+                    <div id="presentations-results" class="results"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const quizzes = {
+            principles: [
+                { q: `أي من الأجهزة التالية يعتبر من أجهزة الإخراج؟`, o: [`لوحة المفاتيح`, `الماسح الضوئي`, `الطابعة`, `الفأرة`], a: 2, e: `الطابعة تعرض النتائج وتخرجها على الورق، بينما لوحة المفاتيح والفأرة والماسح من أجهزة الإدخال.` },
+                { q: `ما الفرق الرئيسي بين RAM وROM؟`, o: [`RAM دائمة و ROM مؤقتة`, `RAM مؤقتة و ROM دائمة`, `كلاهما دائم`, `كلاهما مؤقت`], a: 1, e: `RAM ذاكرة مؤقتة تُفقد عند إطفاء الجهاز، أما ROM فتحتفظ بالتعليمات الأساسية بشكل دائم.` },
+                { q: `كم بتاً في البايت الواحد؟`, o: [`4 بتات`, `8 بتات`, `16 بت`, `32 بت`], a: 1, e: `البايت يساوي 8 بتات.` },
+                { q: `ما نوع البرنامج الذي يدير موارد الحاسوب ويشغّله؟`, o: [`برنامج التطبيقات`, `برنامج النظام`, `الملف المضغوط`, `برنامج الإدخال`], a: 1, e: `برامج النظام مثل Windows تدير الحاسوب وتشغّله، أما برامج التطبيقات فتؤدي مهام محددة للمستخدم.` },
+                { q: `ما هو أفضل مصدر لتحميل برنامج جديد لتثبيته؟`, o: [`موقع مجهول يعد بتحميل مجاني`, `الموقع الرسمي للشركة المطورة أو متجر التطبيقات الرسمي`, `رسالة بريد إلكتروني تحتوي على رابط`, `نسخة من صديق`], a: 1, e: `التحميل من المصادر الرسمية يحمي الحاسوب من البرامج المعدلة أو الضارة ويضمن الحصول على الإصدار الصحيح.` },
+                { q: `أين يمكن إلغاء تثبيت برنامج في Windows؟`, o: [`Settings ← Apps ← Installed apps`, `Control Panel فقط`, `سلة المحذوفات`, `Task Manager`], a: 0, e: `من الإعدادات ثم Apps ثم Installed apps، ثم اختر البرنامج واضغط Uninstall.` },
+                { q: `ما وظيفة برنامج التشغيل (Driver)؟`, o: [`تصميم الصفحات`, `تمكين نظام التشغيل من التواصل مع جهاز معين`, `حماية الملفات بكلمة مرور`, `ضغط الملفات`], a: 1, e: `برنامج التشغيل حلقة الوصل بين نظام التشغيل والجهاز مثل الطابعة أو كرت الشاشة.` },
+                { q: `ما اختصار نسخ العنصر المحدد؟`, o: [`Ctrl+X`, `Ctrl+V`, `Ctrl+C`, `Ctrl+Z`], a: 2, e: `Ctrl+C للنسخ، وCtrl+X للقص، وCtrl+V للصق.` },
+                { q: `ماذا يحدث عند الضغط على Shift+Delete لملف محدد؟`, o: [`ينقل الملف إلى سلة المحذوفات`, `يحذف الملف نهائياً دون المرور بسلة المحذوفات`, `ينسخ الملف`, `يفتح الملف`], a: 1, e: `Shift+Delete يحذف الملف نهائياً، بينما Delete العادي ينقله إلى سلة المحذوفات حيث يمكن استعادته.` },
+                { q: `أي اختصار يُظهر سطح المكتب ويخفي النوافذ المفتوحة؟`, o: [`Win+D`, `Win+E`, `Win+L`, `Alt+F4`], a: 0, e: `Win+D يعرض سطح المكتب، وWin+E يفتح مستكشف الملفات، وWin+L يقفل الجهاز.` },
+                { q: `ما امتداد ملف الصورة من بين الخيارات التالية؟`, o: [`.docx`, `.txt`, `.jpg`, `.exe`], a: 2, e: `الامتداد jpg يستخدم لملفات الصور، أما exe فيستخدم لملفات التشغيل والتثبيت.` },
+                { q: `ما الهدف من النسخ الاحتياطي (Backup)؟`, o: [`تسريع المعالج`, `حماية الملفات المهمة من الفقدان بنسخها في مكان آخر`, `زيادة سعة الذاكرة RAM`, `تغيير لون الشاشة`], a: 1, e: `النسخ الاحتياطي يحفظ نسخة إضافية من الملفات المهمة لاستعادتها عند الفقدان أو التلف.` }
+            ],
+
+            word: [
+                { q: `ما الاختصار الذي ينشئ مستنداً جديداً في Word؟`, o: [`Ctrl+N`, `Ctrl+O`, `Ctrl+S`, `Ctrl+P`], a: 0, e: `Ctrl+N ينشئ مستنداً جديداً، وCtrl+O يفتح مستنداً موجوداً.` },
+                { q: `ما الاختصار الذي يجعل النص غامقاً؟`, o: [`Ctrl+I`, `Ctrl+U`, `Ctrl+B`, `Ctrl+A`], a: 2, e: `Ctrl+B (Bold) لتغميق النص، وCtrl+I للمائل، وCtrl+U للتسطير.` },
+                { q: `ما الاختصار لتوسيط الفقرة؟`, o: [`Ctrl+L`, `Ctrl+E`, `Ctrl+R`, `Ctrl+J`], a: 1, e: `Ctrl+E لتوسيط الفقرة (Center)، وCtrl+L للمحاذاة يساراً، وCtrl+R يميناً، وCtrl+J للضبط.` },
+                { q: `ما الاختصار الذي يبدأ صفحة جديدة؟`, o: [`Shift+Enter`, `Ctrl+Enter`, `Alt+Enter`, `Ctrl+Shift+Enter`], a: 1, e: `Ctrl+Enter يضيف فاصل صفحة فيبدأ المحتوى التالي في صفحة جديدة.` },
+                { q: `أين توجد أداة إنشاء فهرس المحتويات (Table of Contents) في Word؟`, o: [`تبويب Home`, `تبويب Insert`, `تبويب References`, `تبويب View`], a: 2, e: `فهرس المحتويات موجود في تبويب References، ويعتمد على العناوين من نوع Heading.` },
+                { q: `ما الاختصار الذي يفتح نافذة البحث والاستبدال؟`, o: [`Ctrl+F`, `Ctrl+H`, `Ctrl+G`, `Ctrl+R`], a: 1, e: `Ctrl+H لفتح البحث والاستبدال (Replace)، وCtrl+F للبحث فقط.` },
+                { q: `ما وظيفة مفتاح F7 في Word؟`, o: [`حفظ المستند`, `التدقيق الإملائي والنحوي`, `طباعة المستند`, `تكبير الخط`], a: 1, e: `F7 يبدأ التدقيق الإملائي والنحوي للنص.` },
+                { q: `ما الامتداد الافتراضي لملفات Word الحديثة؟`, o: [`.doc`, `.docx`, `.txt`, `.pdf`], a: 1, e: `.docx هو الامتداد الحديث الافتراضي، أما .doc فهو الإصدار القديم.` },
+                { q: `أي من هذه الخيارات يُستخدم لتتبع التعديلات التي يجريها المراجعون؟`, o: [`Track Changes`, `Page Break`, `Header`, `Watermark`], a: 0, e: `Track Changes يسجل كل تعديل بلون مميز ليتمكن المؤلف من قبوله أو رفضه.` },
+                { q: `ما الذي يحدد مظهر العنوان ويجعله يظهر في فهرس المحتويات تلقائياً؟`, o: [`استخدام نمط Heading`, `تكبير الخط فقط`, `كتابة العنوان بالخط العريض يدوياً`, `وضع العنوان في وسط الصفحة`], a: 0, e: `استخدام أنماط Heading هو الطريقة الصحيحة، لأن فهرس المحتويات يعتمد عليها بالتحديد.` },
+                { q: `ما الاختصار الذي يزيد حجم الخط؟`, o: [`Ctrl+Shift+>`, `Ctrl+Shift+<`, `Ctrl+=`, `Ctrl+-`], a: 0, e: `Ctrl+Shift+> يكبّر حجم الخط، وCtrl+Shift+< يصغّره.` },
+                { q: `ما الوظيفة الصحيحة للرأس والتذييل (Header & Footer)؟`, o: [`نصوص تتكرر في أعلى كل صفحة أو أسفلها`, `تغيير لون الخلفية`, `حذف الصفحات الفارغة`, `تحويل الملف إلى PDF`], a: 0, e: `الرأس والتذييل نصوص تتكرر في كل صفحة، مثل اسم المؤسسة أو رقم الصفحة.` }
+            ],
+
+            excel: [
+                { q: `ما الصيغة التي تجمع الخلايا من A1 إلى A10؟`, o: [`=ADD(A1:A10)`, `=SUM(A1:A10)`, `=TOTAL(A1:A10)`, `=PLUS(A1:A10)`], a: 1, e: `الدالة SUM هي دالة الجمع الأساسية في Excel.` },
+                { q: `ما الذي يعنيه الرمز $ في المرجع $A$1؟`, o: [`مرجع نسبي يتغير عند النسخ`, `مرجع مطلق يبقى ثابتاً عند النسخ`, `خلية مغلقة للتعديل`, `عملة الخلية`], a: 1, e: `علامة $ تثبّت الصف والعمود، فتبقى الإشارة إلى نفس الخلية عند نسخ الصيغة.` },
+                { q: `ما نتيجة الصيغة =ROUND(3.456,2)؟`, o: [`3.4`, `3.45`, `3.46`, `3.5`], a: 2, e: `ROUND تقرب إلى خانتين عشريتين، والرقم الثالث 6 يرفع الناتج إلى 3.46.` },
+                { q: `ما نتيجة الصيغة =MOD(10,3)؟`, o: [`3`, `1`, `0`, `10`], a: 1, e: `MOD تعطي باقي القسمة: 10 ÷ 3 = 3 والباقي 1.` },
+                { q: `إذا كانت A1 تساوي 55، فما نتيجة =IF(A1&gt;=60,"نجح","رسب")؟`, o: [`نجح`, `رسب`, `خطأ`, `لا شيء`], a: 1, e: `55 ليست أكبر من أو تساوي 60، لذلك يُرجع الشرط الخيار الثاني "رسب".` },
+                { q: `ما وظيفة الدالة IFERROR؟`, o: [`تحذف الخلايا التي بها أخطاء`, `تعرض قيمة بديلة عند حدوث خطأ في الصيغة`, `تعد الأخطاء`, `تصحح الإملاء`], a: 1, e: `IFERROR تعرض القيمة البديلة التي تحددها بدلاً من رسالة الخطأ مثل #N/A.` },
+                { q: `ما الفرق بين COUNTIF وCOUNTIFS؟`, o: [`COUNTIFS تعد بشرط واحد فقط`, `COUNTIFS تعد بعدة شروط في وقت واحد`, `لا فرق بينهما`, `COUNTIF أسرع دائماً`], a: 1, e: `COUNTIF تعد بشرط واحد، أما COUNTIFS فتقبل عدة شروط في الصيغة نفسها.` },
+                { q: `في دالة VLOOKUP، ماذا يعني الوسيط الأخير FALSE؟`, o: [`البحث التقريبي`, `البحث عن مطابقة تامة`, `إرجاع خطأ`, `البحث من اليمين لليسار`], a: 1, e: `FALSE تعني المطابقة التامة، وهي الأدق في أغلب الحالات.` },
+                { q: `ما نتيجة الصيغة =LEFT("مرحبا",2)؟`, o: [`مرح`, `مر`, `با`, `حب`], a: 1, e: `LEFT تستخرج أول حرفين من النص، وهما "مر".` },
+                { q: `ما نتيجة الصيغة =YEAR(DATE(2026,10,30))؟`, o: [`2026`, `30`, `10`, `2030`], a: 0, e: `DATE تنشئ التاريخ 30/10/2026، وYEAR تستخرج السنة منه وهي 2026.` },
+                { q: `أي ميزة في Excel تقترح مخططات وتحليلات تلقائياً بناءً على بياناتك؟`, o: [`Flash Fill`, `Analyze Data (Ideas سابقاً)`, `Freeze Panes`, `Data Validation`], a: 1, e: `Analyze Data ميزة ذكاء صنعي تقترح مخططات وجداول محورية وملخصات بناءً على البيانات.` },
+                { q: `ما الاختصار الذي يفعّل Flash Fill لملء الأنماط تلقائياً؟`, o: [`Ctrl+F`, `Ctrl+E`, `Ctrl+T`, `Ctrl+D`], a: 1, e: `Ctrl+E يطبق Flash Fill بعد كتابة مثالين أو ثلاثة يوضحون النمط المطلوب.` }
+            ],
+
+            presentations: [
+                { q: `ما الاختصار الذي يضيف شريحة جديدة في PowerPoint؟`, o: [`Ctrl+M`, `Ctrl+N`, `Ctrl+L`, `Ctrl+P`], a: 0, e: `Ctrl+M يضيف شريحة جديدة في PowerPoint، أما Ctrl+N فينشئ عرضاً جديداً.` },
+                { q: `ما الاختصار الذي يبدأ العرض من الشريحة الأولى؟`, o: [`F4`, `F5`, `F6`, `F7`], a: 1, e: `F5 يبدأ العرض من الأول، وShift+F5 يبدأه من الشريحة الحالية.` },
+                { q: `ما الذي يحدده التخطيط (Layout) في الشريحة؟`, o: [`حجم الخط فقط`, `ترتيب العناصر داخل الشريحة`, `عدد الشرائح`, `لون الخلفية فقط`], a: 1, e: `التخطيط يحدد أماكن العنوان والنص والصور والعناصر داخل الشريحة.` },
+                { q: `أين يمكن إضافة تأثير ينتقل بين الشرائح؟`, o: [`تبويب Transitions`, `تبويب Insert`, `تبويب View`, `تبويب Review`], a: 0, e: `تبويب Transitions يحتوي على تأثيرات الانتقال بين الشرائح.` },
+                { q: `ماذا يحدث عند الضغط على مفتاح Esc أثناء العرض؟`, o: [`يحفظ العرض`, `يُنهي العرض ويعود إلى التحرير`, `يطبع الشريحة`, `ينتقل للشريحة التالية`], a: 1, e: `Esc يخرج من وضع العرض.` },
+                { q: `أين تُكتب ملاحظات المتحدث التي تظهر له فقط أثناء العرض؟`, o: [`Notes Pane`, `Header`, `Watermark`, `Slide Master`], a: 0, e: `خانة الملاحظات (Notes) تظهر للمتحدث دون أن تظهر للجمهور.` },
+                { q: `ما الذي يوفره تبويب Design؟`, o: [`الألوان والخطوط والموضوعات الجاهزة`, `إدراج الفيديو فقط`, `حفظ الملف`, `طباعة العرض`], a: 0, e: `تبويب Design يحتوي على الموضوعات والألوان والخطوط الجاهزة.` },
+                { q: `ما امتداد ملف PowerPoint الحديث الافتراضي؟`, o: [`.ppt`, `.pptx`, `.pps`, `.odp`], a: 1, e: `.pptx هو الامتداد الحديث، و.ppt للإصدارات القديمة.` },
+                { q: `لتعديل تصميم كل الشرائح مرة واحدة نستخدم:`, o: [`Slide Master`, `Print Preview`, `Table`, `Hyperlink`], a: 0, e: `Slide Master يتيح تعديل الشريحة الأم فتتغير كل الشرائح المرتبطة بها.` },
+                { q: `ما الاختصار الذي يشغّل العرض من الشريحة الحالية؟`, o: [`F5`, `Shift+F5`, `Ctrl+F5`, `Alt+F5`], a: 1, e: `Shift+F5 يبدأ العرض من الشريحة المحددة حالياً.` },
+                { q: `أي تبويب يحتوي على خيار إضافة الحركات (Animations) للعناصر؟`, o: [`Animations`, `Review`, `References`, `Mailings`], a: 0, e: `تبويب Animations يحتوي على حركات العناصر داخل الشريحة.` },
+                { q: `ما الصيغة المناسبة لإرسال العرض للطباعة الثابتة أو المشاركة دون تعديل؟`, o: [`PDF`, `XLSX`, `DOCX`, `TXT`], a: 0, e: `PDF يحفظ شكل العرض ثابتاً ويناسب الطباعة والمشاركة.` }
+            ]
+        };
+
+        function renderQuiz(section) {
+            const box = document.getElementById(section + '-quiz');
+            const items = quizzes[section].map((item, i) => `
+                <div class="question">
+                    <h4>السؤال ${i + 1}: ${item.q}</h4>
+                    <div class="options">
+                        ${item.o.map((opt, j) => `<label class="option"><input type="radio" name="${section}-q${i}" value="${j}"> ${opt}</label>`).join('')}
+                    </div>
+                    <div class="answer-explanation">الإجابة الصحيحة: ${item.o[item.a]}. ${item.e}</div>
+                </div>`).join('');
+            box.innerHTML = items + `<button type="button" class="btn-submit" onclick="checkAnswers('${section}')">تحقق من الإجابات</button>`;
+        }
+
+        function checkAnswers(section) {
+            let correct = 0;
+            const list = quizzes[section];
+
+            list.forEach((item, i) => {
+                const name = `${section}-q${i}`;
+                const selected = document.querySelector(`input[name="${name}"]:checked`);
+                const questionDiv = document.querySelector(`input[name="${name}"]`).closest('.question');
+                const labels = questionDiv.querySelectorAll('.option');
+
+                labels.forEach((label, j) => {
+                    label.classList.remove('correct', 'incorrect', 'selected');
+                    if (j === item.a) label.classList.add('correct');
+                });
+
+                if (selected) {
+                    const chosen = parseInt(selected.value, 10);
+                    labels[chosen].classList.add('selected');
+                    if (chosen === item.a) {
+                        correct++;
+                    } else {
+                        labels[chosen].classList.remove('correct');
+                        labels[chosen].classList.add('incorrect');
+                    }
+                }
+
+                questionDiv.querySelector('.answer-explanation').classList.add('show');
+            });
+
+            const total = list.length;
+            const percentage = Math.round((correct / total) * 100);
+            const resultsDiv = document.getElementById(`${section}-results`);
+            resultsDiv.innerHTML = `
+                <h3>نتيجتك: ${correct}/${total}</h3>
+                <p>النسبة المئوية: ${percentage}%</p>
+                ${percentage >= 70
+                    ? '<p style="color:#2e7d32;font-weight:bold;">ممتاز! لقد نجحت</p>'
+                    : '<p style="color:#d32f2f;font-weight:bold;">يرجى مراجعة الإجابات الخاطئة</p>'}`;
+            resultsDiv.classList.add('show');
+
+            const progressBar = document.getElementById(`${section}-progress`);
+            if (progressBar) progressBar.style.width = percentage + '%';
+        }
+
+        function switchSection(sectionId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // ================= أسئلة إضافية لكل قسم (لتصبح 15 سؤالاً) =================
+        quizzes.principles.push(
+            { q: `ما الجزء المسؤول عن تنفيذ العمليات الحسابية والمنطقية داخل الحاسوب؟`, o: [`الذاكرة RAM`, `وحدة المعالجة المركزية CPU`, `القرص الصلب`, `الطابعة`], a: 1, e: `المعالج CPU ينفذ التعليمات ويجري العمليات الحسابية والمنطقية، أما RAM فتخزن البيانات مؤقتاً.` },
+            { q: `مساحة قرص معلنة 500 GB، ويظهر في Windows أقل منها قليلاً. ما السبب؟`, o: [`الشركة تبالغ دائماً`, `الشركة تحسب GB بالنظام العشري (1000) بينما يعرض Windows القيم بالنظام الثنائي (1024)`, `الملفات تُحذف تلقائياً`, `بسبب نوع الشاشة`], a: 1, e: `هذا فرق في طريقة الحساب وليس عطلاً. لذلك يظهر الحجم الفعلي أقل من الحجم المعلن.` },
+            { q: `لإظهار امتدادات الملفات في مستكشف Windows نتبع المسار:`, o: [`View ← Show ← File name extensions`, `Home ← Font`, `Insert ← Table`, `Settings ← Sound`], a: 0, e: `من تبويب View نختار Show ثم نفعّل File name extensions لإظهار الامتدادات مثل .docx.` }
+        );
+
+        quizzes.word.push(
+            { q: `أي اختصار يجعل تباعد الأسطر مزدوجاً؟`, o: [`Ctrl+1`, `Ctrl+2`, `Ctrl+5`, `Ctrl+0`], a: 1, e: `Ctrl+1 لتباعد مفرد، وCtrl+2 لتباعد مزدوج، وCtrl+5 لتباعد 1.5.` },
+            { q: `ما فائدة خيار Repeat Header Rows في الجدول؟`, o: [`تكرار الصفحة كاملة`, `تكرار صف العناوين في أعلى كل صفحة يمتد إليها الجدول`, `حذف الصف الأول`, `تلوين الصفوف بالتبادل`], a: 1, e: `عند امتداد الجدول لأكثر من صفحة يُعاد صف العناوين تلقائياً أعلى كل صفحة، فيسهل فهم الأعمدة.` },
+            { q: `ما الفرق بين Page Break وSection Break؟`, o: [`لا فرق بينهما`, `Section Break يسمح بتغيير الهوامش أو الاتجاه لجزء من المستند، أما Page Break فينقل المحتوى إلى صفحة جديدة فقط`, `Page Break أقوى دائماً`, `Section Break يحذف الصفحات`], a: 1, e: `فاصل القسم يقسم المستند إلى أجزاء يمكن تنسيق كل منها بشكل مستقل، بينما فاصل الصفحة ينقل النص للصفحة التالية فقط.` }
+        );
+
+        quizzes.excel.push(
+            { q: `إذا كانت A1=5 وA2=10 وA3=15، فما نتيجة =LARGE(A1:A3,2)؟`, o: [`15`, `10`, `5`, `30`], a: 1, e: `LARGE تعيد القيمة الكبرى رقم k؛ الأولى 15 والثانية 10.` },
+            { q: `ما الخطأ الذي يظهر عند قسمة رقم على صفر؟`, o: [`#VALUE!`, `#DIV/0!`, `#N/A`, `#REF!`], a: 1, e: `#DIV/0! يعني القسمة على صفر. أما #N/A فيعني أن القيمة غير موجودة في البحث.` },
+            { q: `في دالة VLOOKUP، يجب أن يكون مفتاح البحث في:`, o: [`العمود الأخير`, `أي عمود`, `العمود الأول من جدول البحث`, `الصف الأخير`], a: 2, e: `VLOOKUP تبحث دائماً في العمود الأول من النطاق المحدد ثم تعيد قيمة من العمود الذي تحدده.` }
+        );
+
+        quizzes.presentations.push(
+            { q: `ما القاعدة الشائعة لتجنب ازدحام الشريحة بالنصوص؟`, o: [`40 سطراً في الشريحة`, `قاعدة 6×6 تقريباً: 6 نقاط كحد أقصى، و6 كلمات تقريباً في كل نقطة`, `كتابة المحاضرة كاملة على الشريحة`, `استخدام خط صغير جداً`], a: 1, e: `الشريحة الواضحة تحتوي على أفكار قليلة يسهل قراءتها من بعيد، وتترك الشرح الكامل للمتحدث.` },
+            { q: `ما فائدة Presenter View؟`, o: [`طباعة العرض`, `يعرض للمتحدث الشريحة الحالية والتالية والملاحظات، بينما يرى الجمهور الشريحة فقط`, `حفظ العرض كفيديو`, `تغيير الخلفية`], a: 1, e: `Presenter View يساعد المتحدث على متابعة العرض دون أن تظهر الملاحظات للجمهور.` },
+            { q: `لإضافة رقم الشريحة في كل شريحة نستخدم:`, o: [`Insert ← Slide Number`, `Design ← Watermark`, `View ← Ruler`, `File ← Print`], a: 0, e: `من تبويب Insert نختار Slide Number، أو من Header & Footer لإعدادات أكثر.` }
+        );
+
+        // ================= المسرد =================
+        const glossary = [
+            ["Computer", "حاسوب", "جهاز إلكتروني يعالج البيانات حسب التعليمات"],
+            ["Hardware", "العتاد / الأجهزة", "المكونات المادية التي يمكن لمسها"],
+            ["Software", "البرمجيات", "البرامج والتعليمات التي تشغّل الحاسوب"],
+            ["Operating System", "نظام التشغيل", "البرنامج الذي يدير موارد الحاسوب ويوفر واجهة للمستخدم"],
+            ["Processor (CPU)", "المعالج", "الوحدة التي تنفذ التعليمات والعمليات الحسابية"],
+            ["RAM", "ذاكرة الوصول العشوائي", "ذاكرة مؤقتة سريعة تُفقد بياناتها عند إطفاء الجهاز"],
+            ["ROM", "ذاكرة القراءة فقط", "ذاكرة دائمة تحفظ التعليمات الأساسية للتشغيل"],
+            ["Hard Disk (HDD)", "القرص الصلب", "وحدة تخزين دائمة تعتمد على أقراص دوارة"],
+            ["SSD", "قرص الحالة الصلبة", "وحدة تخزين دائمة أسرع وبدون أجزاء متحركة"],
+            ["Bit", "بت", "أصغر وحدة للبيانات وتأخذ القيمة 0 أو 1"],
+            ["Byte", "بايت", "يساوي 8 بتات"],
+            ["Driver", "برنامج التشغيل", "برنامج يمكّن نظام التشغيل من التعامل مع جهاز معين"],
+            ["Installer", "ملف التثبيت", "ملف يقوم بنسخ البرنامج وإعداده على الحاسوب"],
+            ["Uninstall", "إلغاء التثبيت", "إزالة البرنامج من الحاسوب"],
+            ["Folder", "مجلد", "حاوية تنظم الملفات والمجلدات الأخرى"],
+            ["File Extension", "امتداد الملف", "الجزء بعد النقطة في اسم الملف ويحدد نوعه"],
+            ["Path", "المسار", "العنوان الكامل للملف أو المجلد داخل الحاسوب"],
+            ["Recycle Bin", "سلة المحذوفات", "مكان يحفظ الملفات المحذوفة مؤقتاً لاستعادتها"],
+            ["Backup", "نسخة احتياطية", "نسخة إضافية من البيانات لاستعادتها عند الفقدان"],
+            ["Shortcut", "اختصار لوحة المفاتيح", "تركيبة مفاتيح تنفذ أمراً بسرعة"],
+            ["Ribbon", "الشريط", "شريط الأوامر في برامج Office"],
+            ["Quick Access Toolbar", "شريط الوصول السريع", "شريط أعلى النافذة يحتوي على أوامر مفضلة"],
+            ["Style", "النمط", "تنسيق جاهز ومتسق يطبق على الفقرات أو النصوص"],
+            ["Heading", "عنوان", "عنوان قسم يظهر في الفهرس عند استخدام نمط Heading"],
+            ["Margin", "الهامش", "المسافة بين حافة الصفحة والنص"],
+            ["Orientation", "اتجاه الصفحة", "عمودي (Portrait) أو أفقي (Landscape)"],
+            ["Header", "الرأس", "نص يتكرر أعلى كل صفحة"],
+            ["Footer", "التذييل", "نص يتكرر أسفل كل صفحة"],
+            ["Footnote", "الحاشية السفلية", "ملاحظة تظهر أسفل الصفحة لشرح نص معين"],
+            ["Table of Contents", "فهرس المحتويات", "قائمة بالعناوين وأرقام صفحاتها"],
+            ["Track Changes", "تتبع التغييرات", "تسجيل التعديلات التي تُجرى على المستند"],
+            ["Comment", "تعليق", "ملاحظة تُضاف إلى نص للمراجعة"],
+            ["Section Break", "فاصل قسم", "يقسم المستند إلى أجزاء بتنسيقات مستقلة"],
+            ["Cell", "الخلية", "تقاطع صف وعمود في Excel"],
+            ["Range", "النطاق", "مجموعة خلايا متصلة مثل A1:C10"],
+            ["Formula", "صيغة", "تعبير يبدأ بعلامة = ويحسب قيمة"],
+            ["Function", "دالة", "صيغة جاهزة تؤدي عملية محددة مثل SUM"],
+            ["Absolute Reference", "مرجع مطلق", "مرجع ثابت لا يتغير عند النسخ مثل $A$1"],
+            ["Relative Reference", "مرجع نسبي", "مرجع يتغير عند نسخ الصيغة مثل A1"],
+            ["Workbook", "المصنف", "ملف Excel الذي يحتوي على أوراق عمل متعددة"],
+            ["Worksheet", "ورقة العمل", "جدول واحد داخل المصنف"],
+            ["Filter", "التصفية", "إظهار الصفوف التي تطابق شرطاً معيناً فقط"],
+            ["Sort", "الترتيب", "ترتيب البيانات تصاعدياً أو تنازلياً"],
+            ["Pivot Table", "الجدول المحوري", "أداة تلخص البيانات الكبيرة وتحللها"],
+            ["Conditional Formatting", "التنسيق الشرطي", "تغيير شكل الخلية تلقائياً حسب قيمتها"],
+            ["Data Validation", "التحقق من البيانات", "تحديد القيم المسموحة في الخلية"],
+            ["Freeze Panes", "تجميد الأجزاء", "إبقاء صفوف أو أعمدة معينة ظاهرة عند التمرير"],
+            ["Flash Fill", "التعبئة السريعة", "ميزة تكمل النمط تلقائياً بعد أمثلة قليلة"],
+            ["Chart", "مخطط بياني", "تمثيل مرئي للبيانات"],
+            ["Slide", "شريحة", "صفحة واحدة في العرض التقديمي"],
+            ["Layout", "التخطيط", "ترتيب العناصر داخل الشريحة"],
+            ["Theme", "الموضوع", "مجموعة ألوان وخطوط وتأثيرات موحدة"],
+            ["Transition", "الانتقال", "تأثير يظهر عند الانتقال بين الشرائح"],
+            ["Animation", "الحركة", "تأثير يطبق على عنصر داخل الشريحة"],
+            ["Slide Master", "الشريحة الرئيسية", "شريحة أم تحدد تصميم كل الشرائح"],
+            ["Speaker Notes", "ملاحظات المتحدث", "نص يظهر للمتحدث فقط أثناء العرض"]
+        ];
+
+        const glossarySec = document.createElement('div');
+        glossarySec.id = 'glossary';
+        glossarySec.className = 'section';
+        glossarySec.innerHTML = `
+            <h2>مسرد المصطلحات (English - عربي)</h2>
+            <p>ابحث عن أي مصطلح بالعربية أو الإنجليزية. هذه المصطلحات تظهر في الامتحان بالإنجليزية غالباً.</p>
+            <input type="text" class="glossary-search" placeholder="ابحث عن مصطلح..." oninput="filterGlossary(this.value)">
+            <table id="glossary-table" class="glossary-table">
+                <tr><th>English</th><th>العربية</th><th>الشرح</th></tr>
+                ${glossary.map(g => `<tr><td>${g[0]}</td><td>${g[1]}</td><td>${g[2]}</td></tr>`).join('')}
+            </table>`;
+        document.querySelector('.content').appendChild(glossarySec);
+
+        function filterGlossary(value) {
+            const v = value.trim().toLowerCase();
+            document.querySelectorAll('#glossary-table tr').forEach((tr, i) => {
+                if (i === 0) return;
+                tr.style.display = tr.textContent.toLowerCase().includes(v) ? '' : 'none';
+            });
+        }
+
+        // ================= الشروحات المعمقة والتمارين والأخطاء الشائعة =================
+        const extraContent = {
+            principles: `
+                <div class="theory-box">
+                    <h3>15. كيف يعمل الحاسوب من الداخل</h3>
+                    <ul class="list-items">
+                        <li><strong>دورة التنفيذ:</strong> يجلب المعالج التعليمة من الذاكرة (Fetch) ثم يفكّ رموزها (Decode) ثم ينفذها (Execute) ثم يخزن النتيجة (Store)، وتتكرر هذه الدورة ملايين المرات في الثانية.</li>
+                        <li><strong>سرعة المعالج:</strong> تُقاس بالجيجاهيرتز GHz، أي عدد الدورات في الثانية الواحدة (1 GHz = مليار دورة).</li>
+                        <li><strong>الأنوية (Cores):</strong> المعالج رباعي الأنوية يحوي أربعة معالجات مستقلة تستطيع العمل معاً على مهام مختلفة.</li>
+                        <li><strong>الذاكرة المؤقتة (Cache):</strong> ذاكرة صغيرة جداً وسريعة داخل المعالج تحفظ البيانات الأكثر استخداماً.</li>
+                        <li><strong>مسار البيانات العام:</strong> إدخال ← معالجة ← ذاكرة RAM ← إخراج، ويمكن حفظ النتيجة في التخزين الدائم في أي وقت.</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>16. مقارنة وحدات التخزين</h3>
+                    <table>
+                        <tr><th>النوع</th><th>السرعة</th><th>أجزاء متحركة</th><th>الاستخدام الشائع</th></tr>
+                        <tr><td>القرص الصلب HDD</td><td>متوسطة</td><td>نعم</td><td>تخزين كميات كبيرة بسعر مناسب</td></tr>
+                        <tr><td>القرص الحالة الصلبة SSD</td><td>سريعة جداً</td><td>لا</td><td>تشغيل نظام التشغيل والبرامج بسرعة</td></tr>
+                        <tr><td>فلاش USB</td><td>متوسطة</td><td>لا</td><td>نقل الملفات بين الأجهزة</td></tr>
+                        <tr><td>الأقراص الضوئية CD / DVD</td><td>بطيئة</td><td>نعم</td><td>توزيع البرامج والوسائط القديمة</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>17. الحذف والاستعادة بالتفصيل</h3>
+                    <ul class="list-items">
+                        <li><strong>Delete:</strong> ينقل الملف إلى سلة المحذوفات، ويمكن استعادته بالنقر بزر الفأرة الأيمن ← Restore</li>
+                        <li><strong>Shift+Delete:</strong> يحذف الملف نهائياً ولا يمكن استعادته بالطرق العادية</li>
+                        <li><strong>الملفات المحذوفة من فلاش USB:</strong> غالباً تُحذف نهائياً ولا تذهب إلى سلة المحذوفات</li>
+                        <li><strong>إفراغ السلة:</strong> بالنقر بزر الأيمن على أيقونة سلة المحذوفات ← Empty Recycle Bin</li>
+                    </ul>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>تمارين عملية خطوة بخطوة</h4>
+                    <ol>
+                        <li>افتح مستكشف الملفات (Win+E) وأنشئ مجلداً باسم ICDL في سطح المكتب، ثم داخله ثلاثة مجلدات: Word وExcel وPowerPoint.</li>
+                        <li>داخل مجلد Word، أنشئ ملفاً نصياً جديداً (بالنقر بزر الأيمن ← New ← Text Document) واكتب فيه اسمك.</li>
+                        <li>حدد الملف واضغط F2 وغيّر اسمه إلى "تمرين1" واضغط Enter. ستلاحظ أن الامتداد .txt لم يتغير.</li>
+                        <li>من تبويب View فعّل خيار File name extensions، ثم غيّر الامتداد من .txt إلى .docx لاحظ الرسالة التحذيرية، ثم ارجع إلى الامتداد الأصلي.</li>
+                        <li>انسخ الملف بالضغط على Ctrl+C، ثم انتقل إلى مجلد Excel واضغط Ctrl+V لاحظ أن الملف الأصلي بقي في مكانه.</li>
+                        <li>احذف النسخة الموجودة في مجلد Excel بالضغط على Delete، ثم افتح سلة المحذوفات واستعدها بالنقر بزر الأيمن ← Restore.</li>
+                        <li>من الإعدادات (Win+I) ← Apps ← Installed apps، ابحث عن برنامج لا تحتاجه (مثل Calculator إن وُجد) وتأكد من مكان زر Uninstall دون أن تنفذه.</li>
+                    </ol>
+                </div>
+
+                <div class="mistake-box">
+                    <h4>أخطاء شائعة يقع فيها الطلاب</h4>
+                    <ul class="list-items">
+                        <li>الخلط بين Bit وByte: الجهاز يخزن بالبايت، والسرعة تقاس أحياناً بالبت، فانتبه للفرق بين B (بايت) وb (بت).</li>
+                        <li>الخلط بين RAM والتخزين: زيادة RAM تسرع العمل بين البرامج، أما زيادة التخزين فتعطيك مساحة لحفظ الملفات.</li>
+                        <li>تغيير امتداد الملف دون فهم أثره: قد يصبح الملف غير قابل للفتح.</li>
+                        <li>التثبيت من مصادر غير رسمية: قد يحتوي البرنامج على تعديلات غير مرغوبة. استخدم الموقع الرسمي دائماً.</li>
+                        <li>الاعتقاد بأن الحذف النهائي يمكن التراجع عنه بسهولة: Shift+Delete يتجاوز سلة المحذوفات.</li>
+                    </ul>
+                </div>
+            `,
+
+            word: `
+                <div class="theory-box">
+                    <h3>15. الحفظ التلقائي والاستعادة</h3>
+                    <ul class="list-items">
+                        <li><strong>Save vs Save As:</strong> Save تحفظ فوق الملف الحالي، أما Save As فتنشئ نسخة جديدة باسم أو مكان أو صيغة مختلفة</li>
+                        <li><strong>AutoRecover:</strong> يحفظ Word نسخاً مؤقتة تلقائياً، وتجدها في File ← Info ← Manage Document ← Recover Unsaved Documents</li>
+                        <li><strong>AutoSave:</strong> متاح للملفات المحفوظة على OneDrive، ويحفظ التغييرات أولاً بأول</li>
+                        <li><strong>قاعدة أسماء الملفات:</strong> تجنب الرموز مثل / \ : * ? " &lt; &gt; | في اسم الملف</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>16. خصائص المستند (Document Properties)</h3>
+                    <p>من File ← Info يمكن إضافة معلومات وصفية مثل العنوان (Title) والمؤلف (Author) والكلمات المفتاحية (Tags). هذه المعلومات تساعد على البحث عن الملف لاحقاً.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>17. البحث والاستبدال المتقدم</h3>
+                    <ul class="list-items">
+                        <li><strong>Match Case:</strong> يفرق بين الأحرف الكبيرة والصغيرة</li>
+                        <li><strong>Find Whole Words Only:</strong> يبحث عن الكلمة كاملة فقط، فلا يعثر على "كتاب" داخل "كتابة"</li>
+                        <li><strong>Use Wildcards:</strong> يتيح أحرف بديلة مثل ? لحرف واحد و * لعدة أحرف</li>
+                        <li><strong>Format:</strong> يبحث عن تنسيق معين مثل خط أحمر أو خط عريض</li>
+                        <li><strong>البحث عن علامات خاصة:</strong> مثل ^p لعلامة الفقرة و^t لعلامة الجدولة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>18. المسافات البادئة والفقرات بالتفصيل</h3>
+                    <ul class="list-items">
+                        <li><strong>Before / After Spacing:</strong> المسافة قبل الفقرة وبعدها، وهي الطريقة الصحيحة بدلاً من الضغط على Enter عدة مرات</li>
+                        <li><strong>First Line Indent:</strong> إزاحة السطر الأول فقط من الفقرة، كما في بداية الفقرات الأكاديمية</li>
+                        <li><strong>Hanging Indent:</strong> إزاحة كل الأسطر ما عدا السطر الأول، وتستخدم في المراجع والقوائم</li>
+                        <li><strong>Keep with Next:</strong> يمنع فصل العنوان عن الفقرة التي تليه عند تغيير الصفحة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>19. فواصل الصفحات والأقسام</h3>
+                    <ul class="list-items">
+                        <li><strong>Page Break (Ctrl+Enter):</strong> ينقل المحتوى إلى صفحة جديدة</li>
+                        <li><strong>Section Break:</strong> يسمح بتغيير الهوامش أو الاتجاه أو الترويسة لجزء من المستند فقط. يظهر من Layout ← Breaks</li>
+                        <li><strong>إظهار الفواصل:</strong> Ctrl+Shift+* لرؤية كل الرموز المخفية وحذف الفاصل الخاطئ بسهولة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>20. الجداول المتقدمة</h3>
+                    <ul class="list-items">
+                        <li><strong>Repeat Header Rows:</strong> يكرر صف العناوين أعلى كل صفحة يمتد إليها الجدول (Table Layout ← Repeat Header Rows)</li>
+                        <li><strong>تحويل النص إلى جدول:</strong> اكتب النص مفصولاً بفواصل أو tabs ثم Insert ← Table ← Convert Text to Table</li>
+                        <li><strong>محاذاة الخلايا:</strong> من Layout يمكن محاذاة النص عمودياً وأفقياً داخل الخلية</li>
+                        <li><strong>الجدول والعنوان:</strong> يفضل وضع تسمية توضيحية (Caption) فوق الجدول</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>21. الصور وإمكانية الوصول</h3>
+                    <ul class="list-items">
+                        <li><strong>Alt Text:</strong> وصف نصي للصورة يساعد من لا يرى الصورة. يُضاف بالنقر بزر الأيمن على الصورة ← View Alt Text</li>
+                        <li><strong>Crop:</strong> قص أجزاء من الصورة دون حذفها نهائياً</li>
+                        <li><strong>Wrap Text:</strong> In Line with Text يضع الصورة داخل سطر النص، وSquare يجعل النص يلتف حولها</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>22. الدمج البريدي (Mail Merge) للمبتدئين</h3>
+                    <p>لإرسال خطاب واحد لعدد كبير من المستلمين: أنشئ قائمة بيانات في Excel (الاسم والعنوان)، ثم من تبويب Mailings اختر Start Mail Merge ← Letters ← Select Recipients ← Use an Existing List، وأدرج الحقول بـ Insert Merge Field، ثم Finish & Merge.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>23. الطباعة المتقدمة</h3>
+                    <ul class="list-items">
+                        <li><strong>طباعة صفحات محددة:</strong> اكتب 2-5 أو 1,3,7 في خانة Pages</li>
+                        <li><strong>طباعة التحديد فقط:</strong> اختر Print Selection من الخيارات</li>
+                        <li><strong>الطباعة المجمعة (Collated):</strong> تطبع المستند كاملاً لكل نسخة بالترتيب</li>
+                        <li><strong>الطباعة على الوجهين (Duplex):</strong> إذا كانت الطابعة تدعمها</li>
+                    </ul>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>تمارين عملية خطوة بخطوة</h4>
+                    <ol>
+                        <li>أنشئ مستنداً جديداً واكتب عنوان "تقرير الأسبوع" واختر له نمط Title، ثم أضف ثلاثة عناوين فرعية بنمط Heading 1 وفقرة تحت كل عنوان.</li>
+                        <li>في آخر المستند اكتب "فهرس المحتويات" ثم من References ← Table of Contents اختر تنسيقاً جاهزاً، وسيظهر الفهرس بالعناوين الثلاثة تلقائياً.</li>
+                        <li>حدد الفقرة الأولى واجعل المسافة قبلها 12 نقطة من Layout ← Spacing، واجعل السطر الأول منها مسافة بادئة 1 سم من Paragraph.</li>
+                        <li>أدرج جدولاً من 3 صفوف و4 أعمدة من Insert ← Table، واملأ الصف الأول بعناوين وفعّل Repeat Header Rows من Layout.</li>
+                        <li>أدرج صورة من Insert ← Pictures، واجعل التفاف النص Square، ثم أضف تسمية توضيحية من References ← Insert Caption.</li>
+                        <li>استخدم Ctrl+H لاستبدال كلمة معينة في كل المستند مع تفعيل Find Whole Words Only.</li>
+                        <li>من File ← Export احفظ المستند بصيغة PDF وتأكد من ظهور الفهرس والجدول والصورة.</li>
+                    </ol>
+                </div>
+
+                <div class="mistake-box">
+                    <h4>أخطاء شائعة في Word</h4>
+                    <ul class="list-items">
+                        <li>الضغط على Enter عدة مرات لإنشاء مسافة: استخدم Spacing Before/After بدلاً من ذلك.</li>
+                        <li>المسافات المتكررة (Space) لتوسيط النص أو إزاحته: استخدم المحاذاة والمسافة البادئة.</li>
+                        <li>ترقيم العناوين يدوياً (1، 2، 3): استخدم القوائم المرقمة أو Heading المتعددة المستويات.</li>
+                        <li>تغيير الخط والحجم لكل عنوان بشكل يدوي بدل استخدام الأنماط، فلا يظهر العنوان في الفهرس.</li>
+                        <li>الخلط بين Page Break وSection Break، وحذف الفاصل الخطأ دون إظهار الرموز المخفية.</li>
+                    </ul>
+                </div>
+            `,
+
+            excel: `
+                <div class="theory-box">
+                    <h3>16. دوال إضافية مهمة</h3>
+                    <table>
+                        <tr><th>الدالة</th><th>الوصف</th><th>مثال</th><th>النتيجة</th></tr>
+                        <tr><td>SUMPRODUCT</td><td>يضرب الأعمدة المتقابلة ثم يجمعها</td><td>=SUMPRODUCT(B2:B4,C2:C4)</td><td>مجموع الكمية × السعر</td></tr>
+                        <tr><td>LARGE</td><td>القيمة الكبرى رقم k</td><td>=LARGE(A1:A10,2)</td><td>ثاني أكبر قيمة</td></tr>
+                        <tr><td>SMALL</td><td>القيمة الصغرى رقم k</td><td>=SMALL(A1:A10,1)</td><td>أصغر قيمة</td></tr>
+                        <tr><td>RANK</td><td>ترتيب الرقم بين مجموعة</td><td>=RANK(A2,A$2:A$10)</td><td>ترتيب الطالب</td></tr>
+                        <tr><td>CHOOSE</td><td>يختار قيمة حسب رقم الفهرس</td><td>=CHOOSE(2,"أ","ب","ج")</td><td>ب</td></tr>
+                        <tr><td>PMT</td><td>حساب القسط الدوري لقرض</td><td>=PMT(5%/12,60,-10000)</td><td>القسط الشهري لقرض 10000 لمدة 5 سنوات</td></tr>
+                        <tr><td>FV</td><td>القيمة المستقبلية لاستثمار</td><td>=FV(6%,10,-100)</td><td>قيمة ادخار 100 شهرياً لعشر سنوات</td></tr>
+                        <tr><td>EOMONTH</td><td>آخر يوم في الشهر بعد عدد من الأشهر</td><td>=EOMONTH(A1,0)</td><td>آخر يوم في شهر A1</td></tr>
+                        <tr><td>NETWORKDAYS</td><td>عدد أيام العمل بين تاريخين</td><td>=NETWORKDAYS(A1,B1)</td><td>أيام العمل بدون عطلات نهاية الأسبوع</td></tr>
+                        <tr><td>DAYS</td><td>عدد الأيام بين تاريخين</td><td>=DAYS(B1,A1)</td><td>الفرق بالأيام</td></tr>
+                        <tr><td>TEXT</td><td>تحويل الرقم إلى نص بتنسيق محدد</td><td>=TEXT(A1,"0.00")</td><td>الرقم بخانتين عشريتين</td></tr>
+                        <tr><td>VALUE</td><td>تحويل النص المكتوب كرقم إلى رقم</td><td>=VALUE("250")</td><td>250</td></tr>
+                        <tr><td>ROW / COLUMN</td><td>رقم الصف أو العمود للخلية</td><td>=ROW(A5)</td><td>5</td></tr>
+                        <tr><td>ISNUMBER</td><td>يتحقق هل القيمة رقم</td><td>=ISNUMBER(A1)</td><td>TRUE أو FALSE</td></tr>
+                        <tr><td>ISBLANK</td><td>يتحقق هل الخلية فارغة</td><td>=ISBLANK(A1)</td><td>TRUE أو FALSE</td></tr>
+                        <tr><td>CONCAT</td><td>دمج نصوص من عدة خلايا</td><td>=CONCAT(A1,B1)</td><td>النص مدموجاً</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>17. أنواع الأخطاء في الصيغ</h3>
+                    <table>
+                        <tr><th>الخطأ</th><th>المعنى</th><th>الحل الشائع</th></tr>
+                        <tr><td>#DIV/0!</td><td>القسمة على صفر أو خلية فارغة</td><td>تحقق من مقام القسمة أو استخدم IFERROR</td></tr>
+                        <tr><td>#N/A</td><td>القيمة غير موجودة في البحث</td><td>تأكد من القيمة ونوع البيانات</td></tr>
+                        <tr><td>#VALUE!</td><td>نوع بيانات غير مناسب للعملية</td><td>تحقق أن الخلايا أرقام لا نصوص</td></tr>
+                        <tr><td>#REF!</td><td>مرجع خلية محذوفة</td><td>أعد كتابة الصيغة بالمرجع الصحيح</td></tr>
+                        <tr><td>#NAME?</td><td>اسم دالة مكتوب بشكل خاطئ</td><td>تأكد من كتابة اسم الدالة</td></tr>
+                        <tr><td>#####</td><td>العمود ضيق على عرض الرقم</td><td>وسّع العمود بالنقر المزدوج بين رأسي العمودين</td></tr>
+                    </table>
+                </div>
+
+                <div class="theory-box">
+                    <h3>18. الأرقام المكتوبة كنصوص</h3>
+                    <p>إذا بدت الأرقام يساراً في الخلية، فهي غالباً نصوص. هذا يؤدي إلى فشل الدوال مثل SUM. الحل: استخدم Data ← Text to Columns، أو الدالة VALUE، أو اضرب الخلايا في 1.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>19. الجداول المحورية (PivotTable) بالتفصيل</h3>
+                    <ul class="list-items">
+                        <li><strong>الخطوات:</strong> حدد البيانات ← Insert ← PivotTable ← اختر مكان الجدول الجديد</li>
+                        <li><strong>الحقول:</strong> اسحب حقل الصفوف (Rows) وحقل القيم (Values) وحقل الأعمدة (Columns) إلى المناطق المناسبة</li>
+                        <li><strong>التجميع:</strong> يجمع القيم تلقائياً بـ SUM أو COUNT، ويمكن تغييرها من Value Field Settings</li>
+                        <li><strong>التحديث:</strong> بعد تغيير البيانات الأصلية اضغط Refresh من تبويب PivotTable Analyze</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>20. مراجع مطلقة في النطاقات المعقدة</h3>
+                    <p>عند استخدام VLOOKUP أو COUNTIF داخل جدول تنسخ صيغته لأسفل، ثبّت النطاق بالمراجع المطلقة مثل $A$2:$C$50 حتى لا ينزاح النطاق مع كل سطر. الاختصار F4 يحول المرجع بين الأنواع الأربعة بسرعة.</p>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>تمارين عملية خطوة بخطوة</h4>
+                    <ol>
+                        <li>أنشئ جدولاً بعنوان "درجات الطلاب" يحتوي: الاسم في العمود A، والدرجة في العمود B من 10 طلاب.</li>
+                        <li>في العمود C اكتب صيغة IFS تحدد التقدير (ممتاز من 90، جيد جداً من 80، جيد من 70، مقبول من 60، وإلا ضعيف)، ثم انسخها للأسفل بمقبض التعبئة.</li>
+                        <li>في خلية منفصلة احسب المتوسط بالدالة AVERAGE، وأعلى درجة بـ MAX، ثم اكتب في خلية أخرى =RANK لترتيب أول طالب بين الجميع.</li>
+                        <li>حدد الجدول واضغط Ctrl+T لتحويله إلى جدول ذكي، ثم فعّل الفرز والتصفية من أسهم الرأس.</li>
+                        <li>من View ← Freeze Panes ← Freeze Top Row لتثبيت صف العناوين.</li>
+                        <li>أنشئ مخططاً عمودياً للدرجات بتحديد الأعمدة A وB ثم Insert ← Charts ← Clustered Column، وأضف عنواناً للمخطط.</li>
+                        <li>اكتب صيغة في خلية أخرى: =COUNTIF(B2:B11,"&gt;=60") لعدد الناجحين، ثم غيّر أحد الأرقام واحسب النتيجة من جديد لتلاحظ التحديث التلقائي.</li>
+                    </ol>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>تمرين تحليلي: جدول مبيعات</h4>
+                    <ol>
+                        <li>أنشئ جدولاً بأعمدة: المنطقة، المنتج، الكمية، السعر، الإجمالي.</li>
+                        <li>في عمود الإجمالي اكتب =C2*D2 ثم انسخ الصيغة لكل الصفوف.</li>
+                        <li>استخدم SUMIFS لحساب إجمالي مبيعات منطقة معينة لمنتج معين.</li>
+                        <li>أنشئ جدولاً محورياً يعرض مجموع الإجمالي لكل منطقة كصفوف.</li>
+                    </ol>
+                </div>
+
+                <div class="mistake-box">
+                    <h4>أخطاء شائعة في Excel</h4>
+                    <ul class="list-items">
+                        <li>نسيان علامة = في بداية الصيغة، فتظهر كنص عادي.</li>
+                        <li>في VLOOKUP، القيمة المراد البحث عنها يجب أن تكون في العمود الأول من النطاق.</li>
+                        <li>نسخ صيغة دون مراجع مطلقة فتتغير النطاقات بشكل خاطئ.</li>
+                        <li>استخدام COUNTIF مع النص دون انتباه إلى المسافات الزائدة؛ استخدم TRIM لتنظيف البيانات.</li>
+                        <li>الاعتماد على Autocalculation دون التحقق: تأكد أن وضع الحساب تلقائي من Formulas ← Calculation Options.</li>
+                    </ul>
+                </div>
+            `,
+
+            presentations: `
+                <div class="theory-box">
+                    <h3>9. قواعد تصميم الشريحة الناجحة</h3>
+                    <ul class="list-items">
+                        <li><strong>الفكرة الواحدة:</strong> كل شريحة تحمل فكرة رئيسية واحدة</li>
+                        <li><strong>قاعدة 6×6 تقريباً:</strong> 6 نقاط كحد أقصى في الشريحة، و6 كلمات تقريباً في كل نقطة</li>
+                        <li><strong>حجم الخط:</strong> لا يقل عن 24 نقطة للنص، والعنوان أكبر</li>
+                        <li><strong>التباين:</strong> النص الداكن على خلفية فاتحة أو العكس، لتسهل القراءة</li>
+                        <li><strong>الاتساق:</strong> استخدم نفس الخطوط والألوان والمواقع في كل الشرائح</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>10. الشريحة الرئيسية (Slide Master) بالتفصيل</h3>
+                    <p>من View ← Slide Master تعدل الشريحة الأم فتتغير كل الشرائح المرتبطة بها. مثلاً لإضافة شعار المؤسسة لكل الشرائح، ضعه مرة واحدة في الشريحة الرئيسية. ويمكن أيضاً تعديل التخطيطات الفرعية (Layouts) من نفس الواجهة.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>11. الأقسام (Sections) في العرض الكبير</h3>
+                    <p>إذا كان العرض طويلاً قسّمه إلى أقسام من Home ← Section ← Add Section. هذا يسهل إعادة الترتيب وإدارة الشرائح كمجموعات.</p>
+                </div>
+
+                <div class="theory-box">
+                    <h3>12. عرض المتحدث وأرقام الشرائح</h3>
+                    <ul class="list-items">
+                        <li><strong>Presenter View:</strong> من Slide Show ← Use Presenter View، ويعرض الملاحظات والشريحة التالية للمتحدث فقط</li>
+                        <li><strong>البدء من الشريحة الأولى في عرض المتحدث:</strong> Alt+F5</li>
+                        <li><strong>أرقام الشرائح:</strong> Insert ← Slide Number، أو من Header & Footer لتطبيقها على كل الشرائح</li>
+                        <li><strong>التذييل:</strong> نص يتكرر أسفل كل شريحة مثل اسم الشركة</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>13. انتقال Morph والتأثيرات المتقدمة</h3>
+                    <ul class="list-items">
+                        <li><strong>Morph:</strong> ينتقل بسلاسة بين شريحتين، فتتحرك العناصر المتشابهة من موقعها القديم إلى الجديد</li>
+                        <li><strong>الترتيب الصحيح للحركات:</strong> الانتقال يحدد كيف تظهر الشريحة، والحركات تحدد كيف تظهر العناصر داخلها</li>
+                        <li><strong>الإفراط:</strong> الكثير من الحركات يشتت الجمهور، فاستخدم حركة واحدة أو اثنتين فقط</li>
+                    </ul>
+                </div>
+
+                <div class="theory-box">
+                    <h3>14. التصدير والمشاركة</h3>
+                    <ul class="list-items">
+                        <li><strong>PDF:</strong> File ← Export ← Create PDF، ويحفظ الشكل ثابتاً للطباعة والمشاركة</li>
+                        <li><strong>النشرة (Handouts):</strong> طباعة عدة شرائح في صفحة واحدة مع مساحة للملاحظات من خيارات الطباعة</li>
+                        <li><strong>الفيديو:</strong> File ← Export ← Create a Video لتحويل العرض إلى ملف فيديو</li>
+                        <li><strong>التحقق من إمكانية الوصول:</strong> Review ← Check Accessibility للتأكد من وجود نص بديل للصور وترتيب منطقي للشرائح</li>
+                    </ul>
+                </div>
+
+                <div class="exercise-box">
+                    <h4>تمارين عملية خطوة بخطوة</h4>
+                    <ol>
+                        <li>أنشئ عرضاً جديداً من تخطيط Title Slide وأدخل عنوان "ICDL" واسمك.</li>
+                        <li>أضف 4 شرائح بتخطيط Title and Content، واكتب في كل شريحة نقطتين فقط.</li>
+                        <li>من Design اختر موضوعاً مناسباً، ثم من View ← Slide Master أضف اسمك كتذييل لكل الشرائح.</li>
+                        <li>أضف Insert ← Slide Number لظهور رقم الشريحة في كل شريحة.</li>
+                        <li>طبّق على كل الشرائح الانتقال Fade من Transitions ← Apply To All.</li>
+                        <li>أضف إلى الشريحة الثانية صورة من Insert ← Pictures، واكتب لها نصاً بديلاً من Alt Text.</li>
+                        <li>شغّل العرض بـ F5، ثم احفظه كملف PDF من File ← Export.</li>
+                    </ol>
+                </div>
+
+                <div class="mistake-box">
+                    <h4>أخطاء شائعة في PowerPoint</h4>
+                    <ul class="list-items">
+                        <li>وضع نص طويل جداً على الشريحة فيقرأ الجمهور بدلاً من الاستماع.</li>
+                        <li>استخدام عدة خطوط وألوان مختلفة دون سبب، فيفقد العرض تناسقه.</li>
+                        <li>إضافة حركات كثيرة لكل عنصر دون فائدة.</li>
+                        <li>تغيير التصميم شريحة بشريحة بدلاً من استخدام الشريحة الرئيسية (Slide Master).</li>
+                        <li>نسيان نص بديل للصور، فلا يستفيد منها ضعاف البصر.</li>
+                    </ul>
+                </div>
+            `
+        };
+
+        // إدراج الشروحات الإضافية في كل قسم وإعادة توليد الأسئلة
+        ['principles', 'word', 'excel', 'presentations'].forEach(section => {
+            const sec = document.getElementById(section);
+            sec.querySelector('.questions-container').insertAdjacentHTML('beforebegin', extraContent[section]);
+            renderQuiz(section);
+        });
+
+        // ================= الاختبار النهائي =================
+        const finalSec = document.createElement('div');
+        finalSec.id = 'final';
+        finalSec.className = 'section';
+        finalSec.innerHTML = `
+            <h2>الاختبار النهائي (محاكاة الامتحان)</h2>
+            <div class="theory-box">
+                <h3>تعليمات الاختبار</h3>
+                <ul class="list-items">
+                    <li>يتكون الاختبار من 20 سؤالاً، 5 أسئلة من كل محور، تُختار عشوائياً</li>
+                    <li>مدة الاختبار 45 دقيقة كما في الامتحان الحقيقي تقريباً</li>
+                    <li>عند انتهاء الوقت يُصحح الاختبار تلقائياً</li>
+                    <li>لا تنظر إلى الشروحات قبل إنهاء الاختبار لتحصل على تقييم حقيقي</li>
+                </ul>
+            </div>
+            <div class="exam-controls">
+                <button type="button" class="btn-start" onclick="startFinal()">ابدأ الاختبار النهائي</button>
+            </div>
+            <div class="timer" id="final-timer">45:00</div>
+            <div id="final-quiz"></div>
+            <div id="final-results" class="results"></div>`;
+        document.querySelector('.content').appendChild(finalSec);
+
+        const navBar = document.querySelector('.nav-tabs');
+        navBar.insertAdjacentHTML('beforeend',
+            `<button class="nav-tab" onclick="switchSection('glossary', this)">المسرد</button>` +
+            `<button class="nav-tab" onclick="switchSection('final', this)">اختبار نهائي</button>`);
+
+        let finalSet = [];
+        let finalSeconds = 45 * 60;
+        let finalInterval = null;
+        let finalSubmitted = false;
+
+        function shuffleArr(arr) {
+            return arr.slice().sort(() => Math.random() - 0.5);
+        }
+
+        function updateTimer() {
+            const m = Math.floor(finalSeconds / 60);
+            const s = finalSeconds % 60;
+            document.getElementById('final-timer').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function startFinal() {
+            finalSet = shuffleArr(
+                ['principles', 'word', 'excel', 'presentations'].flatMap(s =>
+                    shuffleArr(quizzes[s]).slice(0, 5).map(item => ({ ...item, section: s }))
+                )
+            );
+            finalSubmitted = false;
+            document.getElementById('final-quiz').innerHTML = finalSet.map((item, i) => `
+                <div class="question">
+                    <h4>السؤال ${i + 1}: ${item.q}</h4>
+                    <div class="options">
+                        ${item.o.map((opt, j) => `<label class="option"><input type="radio" name="final-q${i}" value="${j}"> ${opt}</label>`).join('')}
+                    </div>
+                    <div class="answer-explanation">الإجابة الصحيحة: ${item.o[item.a]}. ${item.e}</div>
+                </div>`).join('') +
+                `<button type="button" class="btn-submit" onclick="submitFinal()">إنهاء وتصحيح</button>`;
+            document.getElementById('final-results').classList.remove('show');
+            finalSeconds = 45 * 60;
+            updateTimer();
+            clearInterval(finalInterval);
+            finalInterval = setInterval(() => {
+                finalSeconds--;
+                updateTimer();
+                if (finalSeconds <= 0) {
+                    clearInterval(finalInterval);
+                    submitFinal();
+                }
+            }, 1000);
+        }
+
+        function submitFinal() {
+            if (!finalSet.length || finalSubmitted) return;
+            finalSubmitted = true;
+            clearInterval(finalInterval);
+
+            let correct = 0;
+            const perSection = {};
+            ['principles', 'word', 'excel', 'presentations'].forEach(s => perSection[s] = { ok: 0, total: 0 });
+
+            finalSet.forEach((item, i) => {
+                const name = `final-q${i}`;
+                const selected = document.querySelector(`input[name="${name}"]:checked`);
+                const questionDiv = document.querySelector(`input[name="${name}"]`).closest('.question');
+                const labels = questionDiv.querySelectorAll('.option');
+                perSection[item.section].total++;
+
+                labels.forEach((label, j) => {
+                    if (j === item.a) label.classList.add('correct');
+                });
+                if (selected) {
+                    const chosen = parseInt(selected.value, 10);
+                    if (chosen === item.a) {
+                        correct++;
+                        perSection[item.section].ok++;
+                    } else {
+                        labels[chosen].classList.add('incorrect');
+                    }
+                }
+                questionDiv.querySelector('.answer-explanation').classList.add('show');
+            });
+
+            const total = finalSet.length;
+            const percentage = Math.round((correct / total) * 100);
+            const names = { principles: 'مبادئ الحاسوب', word: 'Word', excel: 'Excel', presentations: 'PowerPoint' };
+            const breakdown = Object.keys(perSection).map(s =>
+                `<li>${names[s]}: ${perSection[s].ok}/${perSection[s].total}</li>`).join('');
+
+            const resultsDiv = document.getElementById('final-results');
+            resultsDiv.innerHTML = `
+                <h3>نتيجتك النهائية: ${correct}/${total}</h3>
+                <p>النسبة المئوية: ${percentage}%</p>
+                <ul class="list-items" style="text-align:right;">${breakdown}</ul>
+                ${percentage >= 70
+                    ? '<p style="color:#2e7d32;font-weight:bold;">ممتاز! أنت جاهز للامتحان الحقيقي</p>'
+                    : '<p style="color:#d32f2f;font-weight:bold;">راجع الأقسام الأضعف ثم أعد الاختبار</p>'}`;
+            resultsDiv.classList.add('show');
+            document.getElementById('final-timer').textContent += ' (انتهى)';
+        }
+    </script>
+</body>
+</html>
